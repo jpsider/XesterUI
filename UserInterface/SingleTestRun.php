@@ -6,6 +6,13 @@
 <?php
 	require_once 'components/header.php';
 ?>
+<script> 
+	$(document).ready(function() {
+		$('#example').dataTable( {
+			"order":[[ 2, "desc" ]]
+		});
+	});
+</script>
 <body>
     <div class="container" style="margin-left:10px">
     	<div class="row">
