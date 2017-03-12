@@ -23,11 +23,44 @@ VALUES (1,'PASS','#006633','Green'),
 (6,'UNKNOWN','#666666','Grey');
 
 INSERT INTO QUEUE_MANAGER (Status_ID, Wait, Log_File)
-VALUES (1,60,'c:\\SummitRTS\\Queue_Manager\\Queue_Manager.log');
+VALUES (1,60,'c:\\XesterUI\\Queue_Manager\\Queue_Manager.log');
 
-INSERT INTO TARGET_DIRECTORIES (ID, Directory, STATUS_ID)
-VALUES (1,'c:\\OPEN_PROJECTS\\XesterUI\\SAMPLE_DIR',12);
+INSERT INTO PASSWORDS (ID, Username, Password)
+VALUES (1,'administrator@corp.local','VMware1!'),(2,'administrator','BelayTech2015'),(3,'root','BelayTech2015');
 
-INSERT INTO TESTS (ID,Target_ID,Status_ID,RESULT_ID,Log_file,XML_file)
-VALUES (1,1,9,1,'c:\\xesterResults\\1\xester.log','c:\\xesterResults\\1\xester.xml');
+INSERT INTO Target_Types (ID, Name)
+VALUES (1,'vcenter'),(2,'DataCenter'),(3,'Cluster'),(4,'VM'),(5,'vds'),(6,'Host');
+
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
+VALUES (1,'HomeLab','C:\Program Files\WindowsPowerShell\Modules\Vester\1.0.1\Configs\Config.json',11);
+
+INSERT INTO TARGETS (ID,Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID)
+VALUES (1,'192.168.2.200',1,'192.168.2.200',11,1,1),(2,'DC01',2,'na',11,1,1),(3,'Cluster01',3,'na',11,1,1),(4,'Win_7_test_VM',4,'na',11,2,1),(5,'Win_10_test_VM',4,'na',11,2,1),
+(6,'CentOS_6_test_vm',4,'na',11,3,1),(7,'Android_4_test_vm',4,'na',11,1,1),(8,'Embedded-vCenter-Server-Appliance',4,'na',11,3,1),(9,'192.168.2.202',6,'192.168.2.202',11,1,1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

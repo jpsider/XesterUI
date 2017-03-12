@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="51" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2017-03-12" time="11:35:19">
+  <environment user="justin" machine-name="DELL-DESKTOP" cwd="C:\temp" user-domain="dell-desktop" platform="Microsoft Windows 10 Pro|C:\WINDOWS|\Device\Harddisk0\Partition3" nunit-version="2.5.8.0" os-version="10.0.14393" clr-version="4.0.30319.42000" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Powershell" name="Pester" executed="True" result="Failure" success="False" time="6.4052" asserts="0">
+    <results>
+      <test-suite type="TestFixture" name="Cluster Configuration: DRS-Enabled.Vester.ps1" executed="True" result="Success" success="True" time="0.0618" asserts="0" description="Cluster Configuration: DRS-Enabled.Vester.ps1">
+        <results>
+          <test-case description="Cluster Cluster01 - DRS State" name="Cluster Configuration: DRS-Enabled.Vester.ps1.Cluster Cluster01 - DRS State" time="0.0618" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Cluster Configuration: DRS-Level.Vester.ps1" executed="True" result="Success" success="True" time="0.0653" asserts="0" description="Cluster Configuration: DRS-Level.Vester.ps1">
+        <results>
+          <test-case description="Cluster Cluster01 - DRS Automation Level" name="Cluster Configuration: DRS-Level.Vester.ps1.Cluster Cluster01 - DRS Automation Level" time="0.0653" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Cluster Configuration: DRS-Mode.Vester.ps1" executed="True" result="Success" success="True" time="0.0839" asserts="0" description="Cluster Configuration: DRS-Mode.Vester.ps1">
+        <results>
+          <test-case description="Cluster Cluster01 - DRS Migration Threshold" name="Cluster Configuration: DRS-Mode.Vester.ps1.Cluster Cluster01 - DRS Migration Threshold" time="0.0839" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Cluster Configuration: HA-Enabled.Vester.ps1" executed="True" result="Success" success="True" time="0.0663" asserts="0" description="Cluster Configuration: HA-Enabled.Vester.ps1">
+        <results>
+          <test-case description="Cluster Cluster01 - HA State" name="Cluster Configuration: HA-Enabled.Vester.ps1.Cluster Cluster01 - HA State" time="0.0663" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: Account-Lockout.Vester.ps1" executed="True" result="Success" success="True" time="0.2288" asserts="0" description="Host Configuration: Account-Lockout.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Account Lock Failures" name="Host Configuration: Account-Lockout.Vester.ps1.Host 192.168.2.202 - Account Lock Failures" time="0.2288" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: Account-UnlockTime.Vester.ps1" executed="True" result="Success" success="True" time="0.1934" asserts="0" description="Host Configuration: Account-UnlockTime.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Account Unlock Time" name="Host Configuration: Account-UnlockTime.Vester.ps1.Host 192.168.2.202 - Account Unlock Time" time="0.1934" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: DCUI-Access.Vester.ps1" executed="True" result="Success" success="True" time="0.3071" asserts="0" description="Host Configuration: DCUI-Access.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - DCUI Access" name="Host Configuration: DCUI-Access.Vester.ps1.Host 192.168.2.202 - DCUI Access" time="0.3071" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: DCUI-Timeout.Vester.ps1" executed="True" result="Success" success="True" time="0.1606" asserts="0" description="Host Configuration: DCUI-Timeout.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - DCUI Timeout" name="Host Configuration: DCUI-Timeout.Vester.ps1.Host 192.168.2.202 - DCUI Timeout" time="0.1606" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: DNS-Address.Vester.ps1" executed="True" result="Success" success="True" time="0.158" asserts="0" description="Host Configuration: DNS-Address.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - DNS Servers" name="Host Configuration: DNS-Address.Vester.ps1.Host 192.168.2.202 - DNS Servers" time="0.158" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: DNS-SearchDomain.Vester.ps1" executed="True" result="Success" success="True" time="0.1125" asserts="0" description="Host Configuration: DNS-SearchDomain.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - DNS Search Domains" name="Host Configuration: DNS-SearchDomain.Vester.ps1.Host 192.168.2.202 - DNS Search Domains" time="0.1125" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: NTP-Servers.Vester.ps1" executed="True" result="Success" success="True" time="0.1061" asserts="0" description="Host Configuration: NTP-Servers.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - NTP Servers" name="Host Configuration: NTP-Servers.Vester.ps1.Host 192.168.2.202 - NTP Servers" time="0.1061" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: Password-Policy.Vester.ps1" executed="True" result="Success" success="True" time="0.1897" asserts="0" description="Host Configuration: Password-Policy.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Password Policy" name="Host Configuration: Password-Policy.Vester.ps1.Host 192.168.2.202 - Password Policy" time="0.1897" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: SSH-InteractiveTimeout.Vester.ps1" executed="True" result="Success" success="True" time="0.2564" asserts="0" description="Host Configuration: SSH-InteractiveTimeout.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - SSH Interactive Timeout" name="Host Configuration: SSH-InteractiveTimeout.Vester.ps1.Host 192.168.2.202 - SSH Interactive Timeout" time="0.2564" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: SSH-Service.Vester.ps1" executed="True" result="Success" success="True" time="0.1234" asserts="0" description="Host Configuration: SSH-Service.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - SSH Service State" name="Host Configuration: SSH-Service.Vester.ps1.Host 192.168.2.202 - SSH Service State" time="0.1234" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: SSH-Timeout.Vester.ps1" executed="True" result="Success" success="True" time="0.3075" asserts="0" description="Host Configuration: SSH-Timeout.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - SSH Timeout" name="Host Configuration: SSH-Timeout.Vester.ps1.Host 192.168.2.202 - SSH Timeout" time="0.3075" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: SSH-Warning.Vester.ps1" executed="True" result="Success" success="True" time="0.16" asserts="0" description="Host Configuration: SSH-Warning.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - SSH Warning" name="Host Configuration: SSH-Warning.Vester.ps1.Host 192.168.2.202 - SSH Warning" time="0.16" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: Syslog-Firewall.Vester.ps1" executed="True" result="Success" success="True" time="0.1286" asserts="0" description="Host Configuration: Syslog-Firewall.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Syslog Firewall" name="Host Configuration: Syslog-Firewall.Vester.ps1.Host 192.168.2.202 - Syslog Firewall" time="0.1286" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: Syslog-Server.Vester.ps1" executed="True" result="Success" success="True" time="0.3374" asserts="0" description="Host Configuration: Syslog-Server.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Syslog Server" name="Host Configuration: Syslog-Server.Vester.ps1.Host 192.168.2.202 - Syslog Server" time="0.3374" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: TPS-ForceSalting.Vester.ps1" executed="True" result="Success" success="True" time="0.1703" asserts="0" description="Host Configuration: TPS-ForceSalting.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Transparent Page Share Force Salting" name="Host Configuration: TPS-ForceSalting.Vester.ps1.Host 192.168.2.202 - Transparent Page Share Force Salting" time="0.1703" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="Host Configuration: VIB-AcceptanceLevel.Vester.ps1" executed="True" result="Success" success="True" time="1.5611" asserts="0" description="Host Configuration: VIB-AcceptanceLevel.Vester.ps1">
+        <results>
+          <test-case description="Host 192.168.2.202 - Image Profile and VIB Acceptance Level" name="Host Configuration: VIB-AcceptanceLevel.Vester.ps1.Host 192.168.2.202 - Image Profile and VIB Acceptance Level" time="1.5611" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="vCenter Configuration: SMTP-Port.Vester.ps1" executed="True" result="Success" success="True" time="0.2566" asserts="0" description="vCenter Configuration: SMTP-Port.Vester.ps1">
+        <results>
+          <test-case description="vCenter  - SMTP Port" name="vCenter Configuration: SMTP-Port.Vester.ps1.vCenter  - SMTP Port" time="0.2566" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: CDDrive-Host.Vester.ps1" executed="True" result="Success" success="True" time="0.1869" asserts="0" description="VM Configuration: CDDrive-Host.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - CD-ROM Host Device" name="VM Configuration: CDDrive-Host.Vester.ps1.VM Embedded-vCenter-Server-Appliance - CD-ROM Host Device" time="0.0966" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - CD-ROM Host Device" name="VM Configuration: CDDrive-Host.Vester.ps1.VM Win_7_Test_vm - CD-ROM Host Device" time="0.0246" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_10_test_vm - CD-ROM Host Device" name="VM Configuration: CDDrive-Host.Vester.ps1.VM Win_10_test_vm - CD-ROM Host Device" time="0.0283" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - CD-ROM Host Device" name="VM Configuration: CDDrive-Host.Vester.ps1.VM CentOS_6_test_vm - CD-ROM Host Device" time="0.0188" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - CD-ROM Host Device" name="VM Configuration: CDDrive-Host.Vester.ps1.VM Android_4_test_vm - CD-ROM Host Device" time="0.0185" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: CDDrive-ISO.Vester.ps1" executed="True" result="Failure" success="False" time="0.3108" asserts="0" description="VM Configuration: CDDrive-ISO.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - CD-ROM ISO File" name="VM Configuration: CDDrive-ISO.Vester.ps1.VM Embedded-vCenter-Server-Appliance - CD-ROM ISO File" time="0.2286" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - CD-ROM ISO File" name="VM Configuration: CDDrive-ISO.Vester.ps1.VM Win_7_Test_vm - CD-ROM ISO File" time="0.0205" asserts="0" success="False" result="Failure" executed="True">
+            <failure>
+              <message>Expected: value to be empty but it was {@{InputObject=True; SideIndicator==&gt;}}</message>
+              <stack-trace>at line: 94 in C:\Program Files\WindowsPowerShell\Modules\vester\1.0.1\Private\Template\VesterTemplate.Tests.ps1
+94:                         Should BeNullOrEmpty
+</stack-trace>
+            </failure>
+          </test-case>
+          <test-case description="VM Win_10_test_vm - CD-ROM ISO File" name="VM Configuration: CDDrive-ISO.Vester.ps1.VM Win_10_test_vm - CD-ROM ISO File" time="0.0243" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - CD-ROM ISO File" name="VM Configuration: CDDrive-ISO.Vester.ps1.VM CentOS_6_test_vm - CD-ROM ISO File" time="0.0181" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - CD-ROM ISO File" name="VM Configuration: CDDrive-ISO.Vester.ps1.VM Android_4_test_vm - CD-ROM ISO File" time="0.0193" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: CPU-Limits.Vester.ps1" executed="True" result="Success" success="True" time="0.1712" asserts="0" description="VM Configuration: CPU-Limits.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - CPU Limits Test" name="VM Configuration: CPU-Limits.Vester.ps1.VM Embedded-vCenter-Server-Appliance - CPU Limits Test" time="0.0965" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - CPU Limits Test" name="VM Configuration: CPU-Limits.Vester.ps1.VM Win_7_Test_vm - CPU Limits Test" time="0.0207" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_10_test_vm - CPU Limits Test" name="VM Configuration: CPU-Limits.Vester.ps1.VM Win_10_test_vm - CPU Limits Test" time="0.0185" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - CPU Limits Test" name="VM Configuration: CPU-Limits.Vester.ps1.VM CentOS_6_test_vm - CPU Limits Test" time="0.0179" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - CPU Limits Test" name="VM Configuration: CPU-Limits.Vester.ps1.VM Android_4_test_vm - CPU Limits Test" time="0.0177" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: Memory-Limits.Vester.ps1" executed="True" result="Success" success="True" time="0.2157" asserts="0" description="VM Configuration: Memory-Limits.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - Memory Limits Test" name="VM Configuration: Memory-Limits.Vester.ps1.VM Embedded-vCenter-Server-Appliance - Memory Limits Test" time="0.1392" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - Memory Limits Test" name="VM Configuration: Memory-Limits.Vester.ps1.VM Win_7_Test_vm - Memory Limits Test" time="0.0181" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_10_test_vm - Memory Limits Test" name="VM Configuration: Memory-Limits.Vester.ps1.VM Win_10_test_vm - Memory Limits Test" time="0.0198" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - Memory Limits Test" name="VM Configuration: Memory-Limits.Vester.ps1.VM CentOS_6_test_vm - Memory Limits Test" time="0.0204" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - Memory Limits Test" name="VM Configuration: Memory-Limits.Vester.ps1.VM Android_4_test_vm - Memory Limits Test" time="0.0183" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1" executed="True" result="Success" success="True" time="0.2424" asserts="0" description="VM Configuration: Tools-DiskWiperDisable.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - Tools Disk Wiper Disable" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1.VM Embedded-vCenter-Server-Appliance - Tools Disk Wiper Disable" time="0.1445" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - Tools Disk Wiper Disable" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1.VM Win_7_Test_vm - Tools Disk Wiper Disable" time="0.0293" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_10_test_vm - Tools Disk Wiper Disable" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1.VM Win_10_test_vm - Tools Disk Wiper Disable" time="0.0223" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - Tools Disk Wiper Disable" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1.VM CentOS_6_test_vm - Tools Disk Wiper Disable" time="0.0244" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - Tools Disk Wiper Disable" name="VM Configuration: Tools-DiskWiperDisable.Vester.ps1.VM Android_4_test_vm - Tools Disk Wiper Disable" time="0.022" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1" executed="True" result="Success" success="True" time="0.2434" asserts="0" description="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1">
+        <results>
+          <test-case description="VM Embedded-vCenter-Server-Appliance - Tools HGFS Server Disable" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1.VM Embedded-vCenter-Server-Appliance - Tools HGFS Server Disable" time="0.1487" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_7_Test_vm - Tools HGFS Server Disable" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1.VM Win_7_Test_vm - Tools HGFS Server Disable" time="0.0232" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Win_10_test_vm - Tools HGFS Server Disable" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1.VM Win_10_test_vm - Tools HGFS Server Disable" time="0.0248" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM CentOS_6_test_vm - Tools HGFS Server Disable" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1.VM CentOS_6_test_vm - Tools HGFS Server Disable" time="0.0222" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="VM Android_4_test_vm - Tools HGFS Server Disable" name="VM Configuration: Tools-HGFS-ServerDisable.Vester.ps1.VM Android_4_test_vm - Tools HGFS Server Disable" time="0.0245" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
