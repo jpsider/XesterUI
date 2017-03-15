@@ -57,7 +57,8 @@
 							<th>XML_File</th>
 							<th>Elapsed_Time</th>
 							<th>date_modified</th>
-							<th>Action</th>
+							<th>TestSuites</th>
+							<th>TestCases</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -102,6 +103,9 @@
 								echo '<td width=250>';
 								echo '<input type="submit" class="btn btn-info" value="View TestRun"></form>';
 								echo '</td>';
+								echo '<td width=250>';
+								echo '<form action="TestRunTestCases.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestCases"></form>';
+								echo '</td>';								
 								echo '</tr>';
 							}
 							Database::disconnect();

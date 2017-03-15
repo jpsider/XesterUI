@@ -3,6 +3,35 @@
 <?php
 	require_once 'components/header.php';
 ?>
+<?php
+if (!empty($_GET['System_ID'])) {
+	$System_ID=$_GET['System_ID'];
+	if (!empty($_GET['TestName'])) {
+		$TestName=$_GET['TestName'];
+		if(!empty($_GET['Remediate'])){
+			$Remediate=$_GET['Remediate'];
+			include 'components/database.php';
+			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate) VALUES ('$TestName','$System_ID','5','6','1')";
+			$pdo = Database::connect();
+			$pdo->query($sql);
+			Database::disconnect();
+			// Send the user back to the same page
+			header("Refresh:0 url=index.php");		
+		} else {
+			include 'components/database.php';
+			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID) VALUES ('$TestName','$System_ID','5','6')";
+			$pdo = Database::connect();
+			$pdo->query($sql);
+			Database::disconnect();
+			// Send the user back to the same page
+			header("Refresh:0 url=index.php");
+		}
+	} else {
+
+	}
+} else {
+
+?>
 <script> 
 	$(document).ready(function() {
 		$('#example').dataTable( {
@@ -27,7 +56,9 @@
 							<th>Config_File</th>
 							<th>Status</th>
 							<th>date_modified</th>
-							<th>Action</th>
+							<th>View Targets</th>
+							<th>Remediate</th>
+							<th>Submit TestRun</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,9 +82,9 @@
 								echo '<td>'. $row['Config_File'] . '</td>';
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
-								echo '<td>';
-								echo '<form action="SubmitTestRun.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="Submit TestRun"></form>';
-								echo '<form action="System_Targets.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="View Targets"></form>';
+								echo '<td><form action="System_Targets.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="View Targets"></form></td>';
+								echo '<td><form action="systems.php" method="get"><input type="checkbox" name="Remediate" value="1"></td>';
+								echo '<td><input type="text" name="TestName" value="Enter Test Name"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="Submit TestRun"></form>';
 								echo '</td>';
 								echo '</tr>';
 							}
@@ -68,5 +99,8 @@
 </body>
 <?php
 	require_once 'components/footer.php';
+?>
+<?php
+  }
 ?>
 </html>

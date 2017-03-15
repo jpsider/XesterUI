@@ -53,7 +53,7 @@
 									. "join Target_Types tt on t.Target_Type_ID=tt.ID ";
 	
 							foreach ($pdo->query($sql) as $row) {
-								echo '<tr><form action="SubmitTestRun.php" method="get">';
+								echo '<tr><form action="systems.php" method="get">';
 								echo '<td>'. $row['ID'] . '</td>';
 								echo '<td>'. $row['Target_Name'] . '</td>';
 								echo '<td>'. $row['IP_Address'] . '</td>';
