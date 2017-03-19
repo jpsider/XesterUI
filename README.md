@@ -1,4 +1,4 @@
-![Alt text](https://github.com/BelayTechnologies/XesterUI/blob/master/images/XesterUI.png "XesterUI")  
+![Alt text](https://github.com/BelayTechnologies/XesterUI/blob/master/images/XesterUI_belay.png "XesterUI")  
 
 # XesterUI  
 
