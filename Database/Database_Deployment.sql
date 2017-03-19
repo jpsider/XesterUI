@@ -122,6 +122,7 @@ CREATE TABLE TESTSUITES (
   STATUS_ID int(11) NOT NULL,
   RESULT_ID int(11) NOT NULL,
   Elapsed_Time varchar(20),
+  TestCase_Count int(11),
   Asserts int(11),
   PRIMARY KEY (ID),
   FOREIGN KEY(STATUS_ID) REFERENCES X_STATUS(ID),

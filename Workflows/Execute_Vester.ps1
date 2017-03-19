@@ -143,7 +143,7 @@ if($TotalFailures -ne 0) {
 write-log -Message "Adding top level TestRun results to DB." -Logfile $logfile
 $query = "update TESTRUN set RESULT_ID='$Result',Total_Tests='$TotalTests',
     Errors='$TotalErrors',Failures='$TotalFailures',NotRun='$TotalNotRun',inconclusive='$TotalInconclusive',
-    Ignored='$TotalIgnored',Skipped='$TotalSkipped',Invalid='$TotalInvalid',Elapsed_Time='$ElapsedTime'"
+    Ignored='$TotalIgnored',Skipped='$TotalSkipped',Invalid='$TotalInvalid',Elapsed_Time='$ElapsedTime' where ID like $testRun_id"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 write-log -Message "------TEST RUN DATA-------" -Logfile $logfile
@@ -185,11 +185,14 @@ foreach($testSuite in $TestSuites) {
     } else {
         $TS_Result = 3
     }
-    write-log -Message "Adding top level TestSuite results to DB." -Logfile $logfile
-    $query = "insert into TESTSUITES (Name,TestRun_ID,STATUS_ID,RESULT_ID,Elapsed_Time,Asserts) VALUES ('$TS_NAME','$TestRun_ID',9,'$TS_Result','$TS_Elapsed_Time','$TS_Asserts')"
-    $TestSuite_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
 
-    $testcases = $testSuite.results.'test-case'
+    $testcases = @($testSuite.results.'test-case')
+    $testcases_Count = $testcases.count
+
+    write-log -Message "Adding top level TestSuite results to DB." -Logfile $logfile
+    $query = "insert into TESTSUITES (Name,TestRun_ID,STATUS_ID,RESULT_ID,Elapsed_Time,TestCase_Count,Asserts) VALUES ('$TS_NAME','$TestRun_ID',9,'$TS_Result','$TS_Elapsed_Time','$testcases_Count','$TS_Asserts')"
+    $TestSuite_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
+    
     foreach($testcase in $testcases){
         # Get the TestCase information
         $string = $testcase.description
@@ -200,9 +203,20 @@ foreach($testSuite in $TestSuites) {
         $TC_Result_Name = $testcase.result
         $TC_Target_type = $parts[0]
         $target = $parts[1]
+
+        #Validate that a Target exists in the DB, if not, create it for the system.
+        $query = "select ID,Target_Name,Target_Type_ID,System_ID from TARGETS where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
+        $Target_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+        if($Target_Data.count -eq 0) {
+            write-log -Message "Adding new target $target to System: $TestRun_System_ID DB." -Logfile $logfile
+            $query = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$target',(select ID from Target_Types where name like '$TC_Target_type'),'11','1','$TestRun_System_ID')"
+            Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+        }
+
         # Get the Target ID based on the name in the xml file.
-        $query = "select ID from Targets where Target_Name like '$target'"
+        $query = "select ID from Targets where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
         $TC_TARGET_ID = (@(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)).ID
+
         write-log -Message "Testcase name: $TC_NAME" -Logfile $logfile
         write-log -Message "Testcase result: $TC_Result_Name" -Logfile $logfile
         write-log -Message "Target Type: $TC_Target_type" -Logfile $logfile
@@ -245,16 +259,52 @@ foreach($testSuite in $TestSuites) {
     write-log -Message "Testcase count: $TCcount" -Logfile $logfile
     write-log -Message "----------End TestSuite----------" -Logfile $logfile
 }
-write-log -Message "Finished processing TestRun" -Logfile $logfile
+# Verify that the number of total test is equal to the number of test cases for this test run.
+write-log -Message "Total Tests from XML: $TotalTests" -Logfile $logfile
+write-log -Message "Total Testscases from XML: $TCcount" -Logfile $logfile
+$query = "select tc.ID,   
+				 tc.Name, 
+				 tc.Target_ID, 
+				 tc.TEST_SUITE_ID, 
+				 tc.Elapsed_Time, 
+				 tc.Status_ID, 
+				 tc.Result_ID, 
+				 tc.date_modified, 	
+				 tc.Asserts, 									
+				 s.Status, 
+				 s.HtmlColor, 
+				 r.Name as Result, 
+				 r.HtmlColor as Result_Color, 
+				 t.Target_Name, 
+				 t.System_ID, 
+				 t.IP_Address, 
+				 ts.Name as TestSuiteName 
+			 from TESTCASES tc 
+			 join x_status s on tc.Status_ID=s.ID 
+			 join X_result r on tc.Result_ID=r.ID 
+			 join targets t on tc.Target_ID=t.ID 
+			 join testsuites ts on tc.TEST_SUITE_ID=ts.ID 
+			 where ts.TestRun_ID like $testRun_id and t.System_ID like $TestRun_System_ID"
+$TR_Final_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+$TR_Final_Data_Count = $TR_Final_Data.Count
+
+if($TR_Final_Data_Count -eq $TotalTests) {
+    write-log -Message "Finished processing TestRun" -Logfile $logfile
+} else {
+    # Numbers don't match, mark the test as Critical.
+    $query = "update testrun set RESULT_ID = 3 where ID like $TestRun_ID"
+    Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+    write-log -Message "*********************************************************************" -Logfile $logfile
+    write-log -Message "Total Tests $TotalTests number does not equal DB record number: $TR_Final_Data_Count for this test run." -Logfile $logfile
+    write-log -Message "*********************************************************************" -Logfile $logfile
+    write-log -Message "Finished processing TestRun" -Logfile $logfile
+}
 
 #=======================================================================================
 # Mark the test as complete
 write-log -Message "Marking the TestRun as complete." -Logfile $logfile
-$query = "update testrun set STATUS_ID = 9 where ID = '$TestRun_ID'"
+$query = "update testrun set STATUS_ID = 9 where ID like '$TestRun_ID'"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
-
-Pause 60
-
 #=======================================================================================
 #    _  _  _____                    ____       _             
 #  _| || ||_   _|__  __ _ _ __ ___ | __ )  ___| | __ _ _   _ 
