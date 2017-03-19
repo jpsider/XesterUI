@@ -209,8 +209,10 @@ foreach($testSuite in $TestSuites) {
         $Target_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
         if($Target_Data.count -eq 0) {
             write-log -Message "Adding new target $target to System: $TestRun_System_ID DB." -Logfile $logfile
-            $query = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$target',(select ID from Target_Types where name like '$TC_Target_type'),'11','1','$TestRun_System_ID')"
-            Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+            if($target -ne "") {
+                $query = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$target',(select ID from Target_Types where name like '$TC_Target_type'),'11','1','$TestRun_System_ID')"
+                Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+            }
         }
 
         # Get the Target ID based on the name in the xml file.
