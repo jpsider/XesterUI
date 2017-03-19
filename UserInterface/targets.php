@@ -24,8 +24,8 @@
 							<tr>
 							<th>ID</th>
 							<th>Name</th>
-							<th>Target_Type_ID</th>
 							<th>IP_Address</th>
+							<th>Target_Type_ID</th>
 							<th>System_Name</th>
 							<th>Status</th>
 							<th>date_modified</th>
