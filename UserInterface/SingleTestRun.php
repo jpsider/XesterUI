@@ -30,6 +30,7 @@
 							<th>Status</th>
 							<th>Result</th>
 							<th>Elapsed_Time</th>
+							<th>TestCase_Count</th>
 							<th>Asserts</th>
 							<th>date_modified</th>
 							<th>Action</th>
@@ -45,6 +46,7 @@
 										. "ts.Elapsed_Time, "
 										. "ts.Status_ID, "
 										. "ts.Result_ID, "
+										. "ts.TestCase_Count, "													
 										. "ts.date_modified, "													
 										. "ts.Asserts, "																							
 										. "s.Status, "
@@ -63,6 +65,7 @@
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td style=background-color:'. $row['Result_Color'] . '>'. $row['Result'] . '</td>';
 								echo '<td>'. $row['Elapsed_Time'] . '</td>';
+								echo '<td>'. $row['TestCase_Count'] . '</td>';
 								echo '<td>'. $row['Asserts'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 								echo '<td width=250>';
