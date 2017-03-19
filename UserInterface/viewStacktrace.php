@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-	$TestsuiteId=$_GET['testSuite_id'];
+	$testcase_id=$_GET['testcase_id'];
 ?>
 <?php
 	require_once 'components/header.php';
@@ -20,20 +20,17 @@
 				require_once 'components/Side_Bar.html';
 			?>
 			<div class="col-sm-9 col-md-10 col-lg-10 main">
-				<h3>XesterUI TestCase Results</h3>
+				<h3>XesterUI StackTrace</h3>
 				<div class="row">
 					<table id="example" class="table table-striped table-bordered">
 						<thead>
 							<tr>
 							<th>ID</th>
-							<th>Name</th>
+							<th>TestCaseName</th>
 							<th>Target_Name</th>
 							<th>IP_Address</th>
-							<th>Status</th>
-							<th>Result</th>
-							<th>Elapsed_Time</th>
-							<th>Asserts</th>
-							<th>date_modified</th>
+							<th>Message</th>
+							<th>StackTrace</th>
 							<th>Action</th>
 							</tr>
 						</thead>
@@ -41,47 +38,38 @@
 							<?php 
 							include 'components/database.php';
 							$pdo = Database::connect();
-							$sql = "select tc.ID, " 
+							$sql = "select st.ID, " 
 										. "tc.Name, "
 										. "tc.Target_ID, "
-										. "tc.TEST_SUITE_ID, "
-										. "tc.Elapsed_Time, "
 										. "tc.Status_ID, "
-										. "tc.Result_ID, "
-										. "tc.date_modified, "													
-										. "tc.Asserts, "																							
+										. "tc.Result_ID, "																																
 										. "s.Status, "
 										. "s.HtmlColor, "
 										. "r.Name as Result, "
 										. "r.HtmlColor as Result_Color, "
 										. "t.Target_Name, "
-										. "t.IP_Address "
-									. "from TESTCASES tc "
+										. "t.IP_Address, "
+										. "t.System_ID, "
+										. "st.Testcase_ID, "
+										. "st.Message, "
+										. "st.Stacktrace "
+									. "from STACKTRACE st "
+									. "join testcases tc on st.Testcase_ID=tc.ID "
 									. "join x_status s on tc.Status_ID=s.ID "
 									. "join X_result r on tc.Result_ID=r.ID "
 									. "join targets t on tc.Target_ID=t.ID "
-									. "where tc.TEST_SUITE_ID like $TestsuiteId ";
+									. "where st.testcase_id like $testcase_id ";
 	
 							foreach ($pdo->query($sql) as $row) {
-								echo '<tr>';
+								echo '<tr><form action="systems.php" method="get">';
 								echo '<td>'. $row['ID'] . '</td>';
 								echo '<td>'. $row['Name'] . '</td>';
 								echo '<td>'. $row['Target_Name'] . '</td>';
 								echo '<td>'. $row['IP_Address'] . '</td>';
-								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
-								if ($row['Result_ID'] == 1) {
-									echo '<td style=background-color:'. $row['Result_Color'] . '>'. $row['Result'] . '</td>';
-								} elseif ($row['Result_ID'] == 2) {
-									echo '<td><form action="ViewStacktrace.php" method="get"><input type="hidden" name="testcase_id" value='.$row['ID'].'><input type="submit" class="btn btn-danger" value="View StackTrace"></form></td>';
-								} else {
-									echo '<td style=background-color:'. $row['Result_Color'] . '>'. $row['Result'] . '</td>';
-								}
-								echo '<td>'. $row['Elapsed_Time'] . '</td>';
-								echo '<td>'. $row['Asserts'] . '</td>';
-								echo '<td>'. $row['date_modified'] . '</td>';
-								echo '<td width=250>';
-								echo '<form action="SubmitTestRun.php" method="get"><input type="hidden" name="testSuite_id" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="Remediate"></form>';
-								echo '</td>';
+								echo '<td>'. $row['Message'] . '</td>';
+								echo '<td>'. $row['Stacktrace'] . '</td>';
+								echo '<td><input type="hidden" name="System_ID" value='.$row['System_ID'].'><input type="submit" class="btn btn-success" value="Remediate"></form></td>';
+						
 								echo '</tr>';
 							}
 							Database::disconnect();

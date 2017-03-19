@@ -4,32 +4,31 @@
 	require_once 'components/header.php';
 ?>
 <?php
-if (!empty($_GET['System_ID'])) {
+if (!empty($_GET['TestName'])) {
+	$TestName=$_GET['TestName'];
 	$System_ID=$_GET['System_ID'];
-	if (!empty($_GET['TestName'])) {
-		$TestName=$_GET['TestName'];
-		if(!empty($_GET['Remediate'])){
-			$Remediate=$_GET['Remediate'];
-			include 'components/database.php';
-			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate) VALUES ('$TestName','$System_ID','5','6','1')";
-			$pdo = Database::connect();
-			$pdo->query($sql);
-			Database::disconnect();
-			// Send the user back to the same page
-			header("Refresh:0 url=index.php");		
-		} else {
-			include 'components/database.php';
-			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID) VALUES ('$TestName','$System_ID','5','6')";
-			$pdo = Database::connect();
-			$pdo->query($sql);
-			Database::disconnect();
-			// Send the user back to the same page
-			header("Refresh:0 url=index.php");
-		}
+	if(!empty($_GET['Remediate'])){
+		$Remediate=$_GET['Remediate'];
+		include 'components/database.php';
+		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate) VALUES ('$TestName','$System_ID','5','6','1')";
+		$pdo = Database::connect();
+		$pdo->query($sql);
+		Database::disconnect();
+		// Send the user back to the same page
+		header("Refresh:0 url=index.php");		
 	} else {
-
+		include 'components/database.php';
+		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID) VALUES ('$TestName','$System_ID','5','6')";
+		$pdo = Database::connect();
+		$pdo->query($sql);
+		Database::disconnect();
+		// Send the user back to the same page
+		header("Refresh:0 url=index.php");
 	}
 } else {
+	if (!empty($_GET['System_ID'])) {
+		$System_ID=$_GET['System_ID'];
+	}
 
 ?>
 <script> 

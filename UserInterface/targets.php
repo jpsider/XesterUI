@@ -30,6 +30,7 @@
 							<th>Status</th>
 							<th>date_modified</th>
 							<th>Action</th>
+							<th>View TestCases</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -64,6 +65,7 @@
 								echo '<td width=250>';
 								echo '<input type="submit" class="btn btn-success" value="Submit TestRun"></form>';
 								echo '</td>';
+								echo '<td><form action="targetTestCases.php" method="get"><input type="hidden" name="Target_Id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="History"></form></td>';
 								echo '</tr>';
 							}
 							Database::disconnect();

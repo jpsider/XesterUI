@@ -20,7 +20,7 @@
 				require_once 'components/Side_Bar.html';
 			?>
 			<div class="col-sm-9 col-md-10 col-lg-10 main">
-				<h3>XesterUI TestRun Results</h3>
+				<h3>XesterUI TestRun - TestSuite Results</h3>
 				<div class="row">
 					<table id="example" class="table table-striped table-bordered">
 						<thead>

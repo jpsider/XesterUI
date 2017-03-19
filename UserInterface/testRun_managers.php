@@ -63,7 +63,7 @@
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>' . $row['Status'] . '</td>';								
 								echo '<td>'. $row['Wait'] . '</td>';
 								echo '<td>'. $row['Max_Concurrent'] . '</td>';
-								echo '<td>'. $row['Log_File'] . '</td>';
+								echo '<td><form action="singleLogByName.php" method="get"><input type="hidden" name="Log_File" value='.$row['Log_File'].'><input type="submit" class="btn btn-info" value="View Log"></form></td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 							   	echo '<td>';							   	
 								if ($row['Status_ID'] == 1) {

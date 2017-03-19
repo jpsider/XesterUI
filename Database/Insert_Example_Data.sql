@@ -35,7 +35,7 @@ INSERT INTO Target_Types (ID, Name)
 VALUES (1,'vcenter'),(2,'DataCenter'),(3,'Cluster'),(4,'VM'),(5,'vds'),(6,'Host');
 
 INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
-VALUES (1,'HomeLab','C:\Program Files\WindowsPowerShell\Modules\Vester\1.0.1\Configs\Config.json',11);
+VALUES (1,'HomeLab','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.0.1\\Configs\\Config.json',11);
 
 INSERT INTO TARGETS (ID,Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID)
 VALUES (1,'192.168.2.200',1,'192.168.2.200',11,1,1),(2,'DC01',2,'na',11,1,1),(3,'Cluster01',3,'na',11,1,1),(4,'Win_7_test_VM',4,'na',11,2,1),(5,'Win_10_test_VM',4,'na',11,2,1),

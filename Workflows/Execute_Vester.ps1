@@ -59,7 +59,9 @@ $Logfile = "$resultsDir\testrun.log"
 $resultsFile = "$resultsDir\results.xml"
 
 write-log -Message "Add the Log file to the DB." -Logfile $logfile
-$query = "update TESTRUN set Log_File = '$Logfile' where ID like '$TestRun_ID'"
+$DBLogPath = $LogFile.Replace('\',"\\")
+$query = "update TESTRUN set Log_file = '$DBLogPath' where ID like '$TestRun_ID'"
+Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 write-log -Message "Starting TestRun: $TestRun_Name on System: $TestRun_System_Name Remediate: $TestRun_Remediate Config_File: $TestRun_Config_File" -Logfile $logfile
 
@@ -114,7 +116,9 @@ Disconnect-VIServer -Server $vc_ip -Confirm:$false
 write-log -Message "Parsing the results and updating the DB." -Logfile $logfile
 
 write-log -Message "Import the XML file and add the Path to the DB." -Logfile $logfile
-$query = "update TESTRUN set XML_File = '$resultsFile' where ID like '$TestRun_ID'"
+$DBXMLPath = $resultsFile.Replace('\',"\\")
+$query = "update TESTRUN set XML_File = '$DBXMLPath' where ID like '$TestRun_ID'"
+Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 # TODO - Should probably verify it exists first.
 [xml]$xmlData = get-content "$resultsFile"
@@ -217,8 +221,22 @@ foreach($testSuite in $TestSuites) {
         }
 
         $query = "insert into TESTCASES (Name,Target_ID,STATUS_ID,RESULT_ID,Test_Suite_ID,Elapsed_Time,Asserts) VALUES ('$TC_NAME','$TC_TARGET_ID','9','$TC_Result','$TestSuite_ID','$TC_Elapsed_Time','$TC_Asserts')"
-        Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+        $testCase_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
         $TCcount++
+        
+        $failure = $testcase.'failure'
+        if($failure -ne $null) {
+            Pause 3
+            write-log -Message "Failure detected in XML for testcase ID: $testCase_ID" -Logfile $logfile
+            $Failure_Message = $testcase.'failure'.'message'
+            $Stack_Trace = $testcase.'failure'.'stack-trace'
+            write-log -Message "Failure: $Failure_Message" -Logfile $logfile
+            write-log -Message "Stack Trace: $Stack_Trace" -Logfile $logfile
+            $query = "insert into STACKTRACE (MESSAGE,STACKTRACE,TestCase_ID) VALUES ('$Failure_Message','$Stack_Trace','$testCase_ID')"
+            Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+        } else {
+            write-log -Message "No failure detected in XML." -Logfile $logfile
+        }
 
     }
     
@@ -234,6 +252,8 @@ write-log -Message "Finished processing TestRun" -Logfile $logfile
 write-log -Message "Marking the TestRun as complete." -Logfile $logfile
 $query = "update testrun set STATUS_ID = 9 where ID = '$TestRun_ID'"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+
+Pause 60
 
 #=======================================================================================
 #    _  _  _____                    ____       _             

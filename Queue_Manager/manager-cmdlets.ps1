@@ -86,7 +86,7 @@ function AssignQueuedTests() {
 		if($TestRunMGRDataCount -ne 0) {
 			$testRun_Manager_ID = $TestRunMGRData[0].ID
 			write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile
-			$query = "update testrun set TestRun_Manager_ID = '$testRun_Manager_ID' where ID = '$Test_ID'"
+			$query = "update testrun set Status_ID = 7, TestRun_Manager_ID = '$testRun_Manager_ID' where ID = '$Test_ID'"
 			Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 		}
 		# No available TestRun Managers

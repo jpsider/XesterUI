@@ -88,20 +88,20 @@
 									. 'order by ts.ID DESC ';
 	
 							foreach ($pdo->query($sql) as $row) {
-								echo '<tr><form action="SingleTestRun.php" method="get">';
-								echo '<td><input type="hidden" name="testRun_id" value='.$row['ID'].'>'. $row['ID'] . '</td>';
+								echo '<tr>';
+								echo '<td>'. $row['ID'] . '</td>';
 								echo '<td>'. $row['Name'] . '</td>';
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td style=background-color:'. $row['Result_Color'] . '>'. $row['Result'] . '</td>';
 								echo '<td>'. $row['SYSTEM_Name'] . '</td>';
 								echo '<td>'. $row['Total_Tests'] . '</td>';
 								echo '<td>'. $row['Failures'] . '</td>';
-								echo '<td>'. $row['Log_file'] . '</td>';
-								echo '<td>'. $row['XML_file'] . '</td>';			
+								echo '<td><form action="singleLogByName.php" method="get"><input type="hidden" name="Log_File" value='.$row['Log_file'].'><input type="submit" class="btn btn-info" value="View Log"></form></td>';
+								echo '<td><form action="singleLogByName.php" method="get"><input type="hidden" name="Log_File" value='.$row['XML_file'].'><input type="submit" class="btn btn-info" value="View Log"></form></td>';	
 								echo '<td>'. $row['Elapsed_Time'] . '</td>';			
 								echo '<td>'. $row['date_modified'] . '</td>';
 								echo '<td width=250>';
-								echo '<input type="submit" class="btn btn-info" value="View TestRun"></form>';
+								echo '<form action="SingleTestRun.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestRun"></form>';
 								echo '</td>';
 								echo '<td width=250>';
 								echo '<form action="TestRunTestCases.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestCases"></form>';
