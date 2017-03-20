@@ -5,15 +5,8 @@
 ## Brief Description:  
 
 User Interface for Powershell unit Testing software. The X is silent.  
-This project will consist of an easy to understand User interface, that allows users to submit Unit tests against Powershell code and Virtual infrastructures, as well as view detailed results and log files from those tests.  
+This project will consist of an easy to understand User interface, that allows users to submit Unit/Integration tests against Powershell code and Virtual infrastructures, as well as view detailed results and log files from those tests.  
 This project will integrate with tools like Pester and Vester.  
-
-## Disclosure  
-
-I initially thought that I would start off using this as a UI to Pester, but after playing with Vester for only 5 minutes, I felt it would be a better launching point for this tool.  
-At this time, XesterUI simply wraps the existing Vester project, I have not integrated the code bases at this time.  
-This means you will use existing config.json files that you have created and assign them to a system in XesterUI.  
-In future releases I hope the two projects will merge together in one way or another to make a more versitile solution.  
 
 ## Features  
 
@@ -24,9 +17,14 @@ In future releases I hope the two projects will merge together in one way or ano
 
 ## Components of XesterUI  
 
-* WampServer - Provides the Database and web front end.  
-* Queue Manager - Manages TestRuns in the system queue.  
-* TestRun Manager - Kicks off Vester with specified config.json.  
+* TestRun – A set of specified tests that run on specific Targets.  
+* System - A group of Targets, must contain at least one vCenter  
+* Target – A single vSphere entity, vCenter, Host, Cluster, vm, etc.  
+* Queue Manager – Manages the Queue of tests, assigns them to an appropriate TestRun Manager, also aborts cancelled testruns.  
+* TestRun Manager – A process that can execute a TestRun workflow.  
+* Workflow – A wrapper script for Vester.  
+* Database – Collects all of the meta data about the vSphere systems and TestRun results.  
+* User Interface – Set of web pages where you are able to slice and dice the TestRun data, submit TestRuns, Remediate, etc.  
 
 ## Dependancies  
 
@@ -43,14 +41,14 @@ Review the specific dependancies of these packages for more specific requirement
 ## Installation  
 
 * Install dependancies.  
-* Run deploy_XesterUI.ps1  
+* Run deploy_XesterUI.ps1 (future)  
 * This script will create directories, move files, install modules.  
 * Browse to "machine IP"/XesterUI  
 * Browse pages to update information in Database.  
 
 ## Starting XesterUI  
 
-* Run Start_XesterUI.ps1  
+* Run Start_XesterUI.ps1 (future)  
 * This script will start the Queue Manager and TestRun Manager on the local machine.  
 
 ## Before you start a test  
@@ -71,11 +69,10 @@ Click around and explore!
 The community module is not officially supported and should be used at your own risk.  
 Feel free to submit a bug or feature request.  
 
-## Why not use Jenkins for AppVeyor  
-You can, but this gives you, the System Administrator more power. This was build by and for System Administrators.  
-With easy to understand programming languages so you can customize the system to your needs. I honestly have not spent much time messing with these products to know if they are a better fit for Vester/Pester or VMware Configuration management.  
-Plus I like to build things..... and I really like using Powershell and Wamp!   
-
 ## Contribution  
-I'm not perfect, either is my code! Feel free to contribute to any of my/our projects!  
+I'm not perfect, either is my code! Feel free to contribute to any of our projects!  
 Simply Fork the project, Create a feature branch, submit a PR, it will be reviewed before being merged into the master. 
+
+## Blog
+Visit my blog for screen captures and more details:
+https://invoke-automation.blog
