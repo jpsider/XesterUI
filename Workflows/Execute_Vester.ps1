@@ -243,7 +243,6 @@ foreach($testSuite in $TestSuites) {
         
         $failure = $testcase.'failure'
         if($failure -ne $null) {
-            Pause 3
             write-log -Message "Failure detected in XML for testcase ID: $testCase_ID" -Logfile $logfile
             $Failure_Message = $testcase.'failure'.'message'
             $Stack_Trace = $testcase.'failure'.'stack-trace'
