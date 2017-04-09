@@ -19,8 +19,8 @@ $SCRIPTDIR = split-path $MYINV.MyCommand.Path
 . "$SCRIPTDIR\..\utilities\connection_details.ps1"
 Import-Module "C:\OPEN_PROJECTS\PowerLumber\PowerLumber.psm1"
 Import-Module "C:\OPEN_PROJECTS\PowerWamp\powerWamp.psm1"
-#Import-Module Vester
-Import-Module "C:\OPEN_PROJECTS\Vester\Vester\vester.psm1"
+Import-Module Vester
+#Import-Module "C:\OPEN_PROJECTS\Vester\Vester\vester.psm1"
 Get-Module -ListAvailable vmware* | Import-Module
 
 #=======================================================================================
@@ -133,7 +133,7 @@ $TotalInconclusive = $testRundata.inconclusive
 $TotalIgnored = $testRundata.ignored
 $TotalSkipped = $testRundata.skipped 
 $TotalInvalid = $testRundata.invalid
-$ElapsedTime = $testRundata.time
+$ElapsedTime = $testRundata.'Test-suite'.time
 
 if($TotalFailures -ne 0) {
     $Result = 2
