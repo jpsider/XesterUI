@@ -161,7 +161,7 @@ write-log -Message "Elapsed Time $ElapsedTime" -Logfile $logfile
 write-log -Message "------ END TEST RUN DATA-------" -Logfile $logfile
 
 write-log -Message "Processing TestSuite/TestCase data." -Logfile $logfile
-$TestSuites = @($xmlData.'test-results'.'test-suite'.results.'test-suite')
+$TestSuites = @($xmlData.'test-results'.'test-suite'.results.'test-suite'.results.'test-suite')
 $TScount = 0
 $TCcount = 0
 foreach($testSuite in $TestSuites) {
@@ -193,68 +193,73 @@ foreach($testSuite in $TestSuites) {
     write-log -Message "Adding top level TestSuite results to DB." -Logfile $logfile
     $query = "insert into TESTSUITES (Name,TestRun_ID,STATUS_ID,RESULT_ID,Elapsed_Time,TestCase_Count,Asserts) VALUES ('$TS_NAME','$TestRun_ID',9,'$TS_Result','$TS_Elapsed_Time','$testcases_Count','$TS_Asserts')"
     $TestSuite_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
-    
-    foreach($testcase in $testcases){
-        # Get the TestCase information
-        $string = $testcase.description
-        $parts = $string.split(" ",4)
-        $TC_NAME = $parts[3]
-        $TC_Elapsed_Time = $testcase.time
-        $TC_Asserts = $testcase.asserts
-        $TC_Result_Name = $testcase.result
-        $TC_Target_type = $parts[0]
-        $target = $parts[1]
 
-        #Validate that a Target exists in the DB, if not, create it for the system.
-        $query = "select ID,Target_Name,Target_Type_ID,System_ID from TARGETS where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
-        $Target_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
-        if($Target_Data.count -eq 0) {
-            write-log -Message "Adding new target $target to System: $TestRun_System_ID DB." -Logfile $logfile
-            if($target -ne "") {
-                $query = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$target',(select ID from Target_Types where name like '$TC_Target_type'),'11','1','$TestRun_System_ID')"
-                Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
-            }
-        }
-
-        # Get the Target ID based on the name in the xml file.
-        $query = "select ID from Targets where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
-        $TC_TARGET_ID = (@(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)).ID
-
-        write-log -Message "Testcase name: $TC_NAME" -Logfile $logfile
-        write-log -Message "Testcase result: $TC_Result_Name" -Logfile $logfile
-        write-log -Message "Target Type: $TC_Target_type" -Logfile $logfile
-        write-log -Message "Target: $target" -Logfile $logfile
-        write-log -Message "Elapsed Time: $TC_Elapsed_Time" -Logfile $logfile
-        write-log -Message "Asserts: $TC_Asserts" -Logfile $logfile
-        write-log -Message "Target ID: $TC_TARGET_ID" -Logfile $logfile
-        #write-host "Hyphen:" $parts[2]
-        if($testcase.result -eq "Success") {
-            $TC_Result = 1
-        } elseif($testcase.result -eq "Failure") {
-            $TC_Result = 2
-            # TODO - Get Failure/Stacktrace and add it to the DB (New Table)
-        } else{
-            $TC_Result = 3
-        }
-
-        $query = "insert into TESTCASES (Name,Target_ID,STATUS_ID,RESULT_ID,Test_Suite_ID,Elapsed_Time,Asserts) VALUES ('$TC_NAME','$TC_TARGET_ID','9','$TC_Result','$TestSuite_ID','$TC_Elapsed_Time','$TC_Asserts')"
-        $testCase_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
-        $TCcount++
-        
-        $failure = $testcase.'failure'
-        if($failure -ne $null) {
-            write-log -Message "Failure detected in XML for testcase ID: $testCase_ID" -Logfile $logfile
-            $Failure_Message = $testcase.'failure'.'message'
-            $Stack_Trace = $testcase.'failure'.'stack-trace'
-            write-log -Message "Failure: $Failure_Message" -Logfile $logfile
-            write-log -Message "Stack Trace: $Stack_Trace" -Logfile $logfile
-            $query = "insert into STACKTRACE (MESSAGE,STACKTRACE,TestCase_ID) VALUES ('$Failure_Message','$Stack_Trace','$testCase_ID')"
-            Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
-        } else {
-            write-log -Message "No failure detected in XML." -Logfile $logfile
-        }
-
-    }
+	$TestSuiteResultData = $testSuite.results
+	if($TestSuiteResultData -ne "") {    
+		foreach($testcase in $testcases){
+			# Get the TestCase information
+			$string = $testcase.description
+			$parts = $string.split(" ",4)
+			$TC_NAME = $parts[3]
+			$TC_Elapsed_Time = $testcase.time
+			$TC_Asserts = $testcase.asserts
+			$TC_Result_Name = $testcase.result
+			$TC_Target_type = $parts[0]
+			$target = $parts[1]
+	
+			#Validate that a Target exists in the DB, if not, create it for the system.
+			$query = "select ID,Target_Name,Target_Type_ID,System_ID from TARGETS where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
+			$Target_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+			if($Target_Data.count -eq 0) {
+				write-log -Message "Adding new target $target to System: $TestRun_System_ID DB." -Logfile $logfile
+				if($target -ne "") {
+					$query = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$target',(select ID from Target_Types where name like '$TC_Target_type'),'11','1','$TestRun_System_ID')"
+					Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+				}
+			}
+	
+			# Get the Target ID based on the name in the xml file.
+			$query = "select ID from Targets where Target_Name like '$target' and System_ID like '$TestRun_System_ID'"
+			$TC_TARGET_ID = (@(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)).ID
+	
+			write-log -Message "Testcase name: $TC_NAME" -Logfile $logfile
+			write-log -Message "Testcase result: $TC_Result_Name" -Logfile $logfile
+			write-log -Message "Target Type: $TC_Target_type" -Logfile $logfile
+			write-log -Message "Target: $target" -Logfile $logfile
+			write-log -Message "Elapsed Time: $TC_Elapsed_Time" -Logfile $logfile
+			write-log -Message "Asserts: $TC_Asserts" -Logfile $logfile
+			write-log -Message "Target ID: $TC_TARGET_ID" -Logfile $logfile
+			#write-host "Hyphen:" $parts[2]
+			if($testcase.result -eq "Success") {
+				$TC_Result = 1
+			} elseif($testcase.result -eq "Failure") {
+				$TC_Result = 2
+				# TODO - Get Failure/Stacktrace and add it to the DB (New Table)
+			} else{
+				$TC_Result = 3
+			}
+	
+			$query = "insert into TESTCASES (Name,Target_ID,STATUS_ID,RESULT_ID,Test_Suite_ID,Elapsed_Time,Asserts) VALUES ('$TC_NAME','$TC_TARGET_ID','9','$TC_Result','$TestSuite_ID','$TC_Elapsed_Time','$TC_Asserts')"
+			$testCase_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
+			$TCcount++
+			
+			$failure = $testcase.'failure'
+			if($failure -ne $null) {
+				write-log -Message "Failure detected in XML for testcase ID: $testCase_ID" -Logfile $logfile
+				$Failure_Message = $testcase.'failure'.'message'
+				$Stack_Trace = $testcase.'failure'.'stack-trace'
+				write-log -Message "Failure: $Failure_Message" -Logfile $logfile
+				write-log -Message "Stack Trace: $Stack_Trace" -Logfile $logfile
+				$query = "insert into STACKTRACE (MESSAGE,STACKTRACE,TestCase_ID) VALUES ('$Failure_Message','$Stack_Trace','$testCase_ID')"
+				Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+			} else {
+				write-log -Message "No failure detected in XML." -Logfile $logfile
+			}
+	
+		}
+	} else {
+		write-host "No testcases for TestSuite"
+	}
     
     $TScount++
     write-log -Message "TestSuite count: $TScount" -Logfile $logfile

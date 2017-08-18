@@ -7,6 +7,9 @@ if exist "C:\wamp\bin\mysql\mysql5.6.17\bin\mysql.exe" (
 if exist "C:\wamp\bin\mysql\mysql5.7.11\bin\mysql.exe" (
 	set MYSQL_EXE="C:\wamp\bin\mysql\mysql5.7.11\bin\mysql.exe"
 )
+if exist "C:\wamp\bin\mysql\mysql5.7.9\bin\mysql.exe" (
+	set MYSQL_EXE="C:\wamp\bin\mysql\mysql5.7.9\bin\mysql.exe"
+)
 
 set DB_USER=root
 
