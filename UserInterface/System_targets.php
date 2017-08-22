@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 $System_ID=$_GET['System_ID'];
+$SYSTEM_Name=$_GET['SYSTEM_Name'];
 
 ?>
 <?php
@@ -21,7 +22,9 @@ $System_ID=$_GET['System_ID'];
 				require_once 'components/Side_Bar.html';
 			?>
 			<div class="col-sm-9 col-md-10 col-lg-10 main">
-				<h3>XesterUI Targets</h3>
+				<?php
+				echo "<h3>XesterUI Targets for $SYSTEM_Name </h3>"
+				?>
 				<div class="row">
 					<table id="example" class="table table-striped table-bordered">
 						<thead>

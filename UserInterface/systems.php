@@ -81,7 +81,7 @@ if (!empty($_GET['TestName'])) {
 								echo '<td>'. $row['Config_File'] . '</td>';
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
-								echo '<td><form action="System_Targets.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="View Targets"></form></td>';
+								echo '<td><form action="System_Targets.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="hidden" name="SYSTEM_Name" value='.$row['SYSTEM_Name'].'><input type="submit" class="btn btn-success" value="View Targets"></form></td>';
 								echo '<td><form action="systems.php" method="get"><input type="checkbox" name="Remediate" value="1"></td>';
 								echo '<td><input type="text" name="TestName" value="Enter Test Name"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="submit" class="btn btn-success" value="Submit TestRun"></form>';
 								echo '</td>';

@@ -30,7 +30,7 @@
 				require_once 'components/Side_Bar.html';
 			?>
 			<div class="col-sm-9 col-md-10 col-lg-10 main">
-				<h3>XesterUI TestRun Managers</h3>
+				<h3>XesterUI - Add a Target</h3>
 				<div class="row">
 					<table id="extmple" class="table table-striped table-bordered">
 							<tr>
