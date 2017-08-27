@@ -27,7 +27,16 @@ $host.ui.RawUI.WindowTitle = "XesterUI Queue Manager"
 # The manager Requires the following items to get started properly
 $ManagerAction=$args[0]
 # Set the log file for the Manager.
-$LogFile = "C:\SummitRTS\Queue_Manager\Queue_Manager.log"
+$LogFile = "C:\XesterUI\Queue_Manager\Queue_Manager.log"
+$logStartDay = (get-date).DayOfWeek
+
+# Rename any old Logfiles
+if(Test-Path -Path $logfile){
+	write-Host "Logfile exists, Creating new logfile on QueueManager Start up."
+	$currentTime = Get-Date -Format HHmm
+	$NewLogName = "queue_manager_$currentTime.log"
+	Rename-Item -Path $logfile -NewName $NewLogName -Force -Confirm:$false
+}
 
 #=======================================================================================
 # Queue Manager
@@ -35,6 +44,22 @@ $LogFile = "C:\SummitRTS\Queue_Manager\Queue_Manager.log"
 $ManagerRUNNING = $true
 			
 do {
+	####################################
+	# Log Check
+	####################################
+	# If its a new day, we should roll the log
+	$currentDay = (get-date).DayOfWeek
+	if($currentDay -ne $logStartDay){
+		write-log -Message "Its a new day, time to start a new log file." -Logfile $logfile
+		$logStartDay = (get-date).DayOfWeek
+		$currentTime = Get-Date -Format HHmm
+		$NewLogName = "queue_manager_$currentTime.log"
+		Rename-Item -Path $logfile -NewName $NewLogName -Force -Confirm:$false
+		write-log -Message "#######################################################" -Logfile $logfile
+	}else{
+		write-log -Message "It's not a new day, not new log file." -Logfile $logfile
+	}
+
 	####################################
 	# Status Check  
 	####################################
@@ -45,7 +70,6 @@ do {
 	$ManagerData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 	$ManagerStatus = $ManagerData[0].Status_ID
 	$ManagerWait = $ManagerData[0].Wait
-	$LogFile = $ManagerData[0].Log_File
 	write-log -Message "Manager Status is : ${ManagerStatus}" -Logfile $logfile
 	write-log -Message "Manager Wait is : ${ManagerWait}" -Logfile $logfile
 

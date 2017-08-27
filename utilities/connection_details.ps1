@@ -6,11 +6,10 @@
 # /_/\_\___||___/\__\___|_|   \___/|___|
 #                                       
 #=======================================================================================
-# TestRunManager IP_Address
+# TestRunManager ID
 $TestRunManagerID = "1"
 
-#connection Details for PowerWamp connection String
-
+# Connection Details for PowerWamp connection String
 $MySQLAdminUserName = 'root'
 $MySQLAdminPassword = ' '
 $MySQLHost = '127.0.0.1'
@@ -19,6 +18,8 @@ $MySQLDatabase = 'xesterui'
 # Build MySQL connection String
 $MyConnectionString = "server=$MySQLHost;port=3306;uid=$MySQLAdminUserName;pwd=$MySQLAdminPassword;database=$MySQLDatabase"
 
+# General Use Information
+$workflow_script = "C:\OPEN_PROJECTS\XesterUI\Workflows\Execute_Vester.ps1"
 #=======================================================================================
 #    _  _  _____                    ____       _             
 #  _| || ||_   _|__  __ _ _ __ ___ | __ )  ___| | __ _ _   _ 

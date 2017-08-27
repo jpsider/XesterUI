@@ -28,6 +28,15 @@ $host.ui.RawUI.WindowTitle = "TestRun_Manager"
 $ManagerAction=$args[0]
 # Set the log file for the Manager.
 $logfile = "C:\XesterUI\TestRun_Manager\TestRun_Manager.log"
+$logStartDay = (get-date).DayOfWeek
+
+# Rename any old Logfiles
+if(Test-Path -Path $logfile){
+	write-Host "Logfile exists, Creating new logfile on TestRunManager Start up."
+	$currentTime = Get-Date -Format HHmm
+	$NewLogName = "TestRun_manager_$currentTime.log"
+	Rename-Item -Path $logfile -NewName $NewLogName -Force -Confirm:$false
+}
 
 #=======================================================================================
 # TestRun_Manager
@@ -35,6 +44,22 @@ $logfile = "C:\XesterUI\TestRun_Manager\TestRun_Manager.log"
 $TestRun_ManagerRUNNING = $true
 
 do {
+	####################################
+	# Log Check
+	####################################
+	# If its a new day, we should roll the log
+	$currentDay = (get-date).DayOfWeek
+	if($currentDay -ne $logStartDay){
+		write-log -Message "Its a new day, time to start a new log file." -Logfile $logfile
+		$logStartDay = (get-date).DayOfWeek
+		$currentTime = Get-Date -Format HHmm
+		$NewLogName = "TestRun_manager_$currentTime.log"
+		Rename-Item -Path $logfile -NewName $NewLogName -Force -Confirm:$false
+		write-log -Message "#######################################################" -Logfile $logfile
+	}else{
+		write-log -Message "It's not a new day, no new log file." -Logfile $logfile
+	}
+
 	####################################
 	# Status Check  
 	####################################
