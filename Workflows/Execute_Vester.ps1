@@ -26,6 +26,9 @@ Get-Module -ListAvailable vmware* | Import-Module
 #=======================================================================================
 # Gather Args
 $TestRun_ID=$args[0]
+$vCenter_ID=$args[1]
+write-host "vCenter_ID :$vCenter_ID"
+start-sleep -s 3
 
 #=======================================================================================
 # Mark the test as Running
@@ -50,7 +53,7 @@ $TestRun_Name = $TestRunData.Name
 $TestRun_System_ID = $TestRunData.System_ID
 $TestRun_Remediate = $TestRunData.Remediate
 $TestRun_System_Name = $TestRunData.System_Name
-$TestRun_Config_File = $TestRunData.Config_File
+#$TestRun_Config_File = $TestRunData.Config_File
 
 #=======================================================================================
 # create a results Directory and start a log file
@@ -64,10 +67,6 @@ $DBLogPath = $LogFile.Replace('\',"\\")
 $query = "update TESTRUN set Log_file = '$DBLogPath' where ID like '$TestRun_ID'"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
-write-log -Message "Starting TestRun: $TestRun_Name on System: $TestRun_System_Name Remediate: $TestRun_Remediate Config_File: $TestRun_Config_File" -Logfile $logfile
-
-Pause 3
-
 #=======================================================================================
 # Get the vCenter Information from the System_ID
 write-log -Message "Retrieving vCenter information from DB." -Logfile $logfile
@@ -77,16 +76,22 @@ $query = "select tg.ID,
             tg.IP_Address,
             tg.Password_ID,
             tg.System_ID,
+            tg.Config_File,
             pw.Username,
             pw.password
             from TARGETS tg
             join PASSWORDS pw on tg.Password_ID=pw.ID
-            where tg.system_ID like '$TestRun_System_ID' and tg.Target_Type_ID like '1'"
+            where tg.ID like '$vCenter_ID' and tg.Target_Type_ID like '1'"
 $vCenterData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 $vc_name = $vCenterData.name
 $vc_ip = $vCenterData.IP_Address
 $vc_un = $vCenterData.username
 $vc_pw = $vCenterData.password
+$TestRun_Config_File = $vCenterData.Config_File
+
+write-log -Message "Starting TestRun: $TestRun_Name on System: $TestRun_System_Name Remediate: $TestRun_Remediate Config_File: $TestRun_Config_File" -Logfile $logfile
+
+Pause 3
 
 #=======================================================================================
 # Connect to the vCenter

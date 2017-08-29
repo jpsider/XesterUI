@@ -43,13 +43,40 @@ VALUES (1,'192.168.2.200',1,'192.168.2.200',11,1,1),(2,'DC01',2,'na',11,1,1),(3,
 
 
 
+INSERT INTO PASSWORDS (ID, Username, Password)
+VALUES 
+(4,'team9','VMware1!'),
+(5,'administrator@vsphere.local','VMware1!');
+
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
+VALUES (2,'Hackathon','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config.json',11);
+
+INSERT INTO TARGETS (Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID,Config_File)
+VALUES ('192.168.9.10',1,'192.168.9.10',11,4,2,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config.json');
 
 
 
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
+VALUES (3,'Hackathon_all','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_all.json',11);
 
-
-
-
+INSERT INTO TARGETS (Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID,Config_File)
+VALUES 
+('192.168.0.10',1,'192.168.0.10',11,5,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_Primary.json'),
+('192.168.1.10',1,'192.168.1.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_1.json'),
+('192.168.2.10',1,'192.168.2.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_2.json'),
+('192.168.3.10',1,'192.168.3.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_3.json'),
+('192.168.4.10',1,'192.168.4.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_4.json'),
+('192.168.5.10',1,'192.168.5.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_5.json'),
+('192.168.6.10',1,'192.168.6.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_6.json'),
+('192.168.7.10',1,'192.168.7.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_7.json'),
+('192.168.8.10',1,'192.168.8.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_8.json'),
+('192.168.9.10',1,'192.168.9.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_9.json'),
+('192.168.10.10',1,'192.168.10.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_10.json'),
+('192.168.11.10',1,'192.168.11.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_11.json'),
+('192.168.12.10',1,'192.168.12.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_12.json'),
+('192.168.13.10',1,'192.168.13.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_13.json'),
+('192.168.14.10',1,'192.168.14.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_14.json'),
+('192.168.15.10',1,'192.168.15.10',11,4,3,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_team_15.json');
 
 
 

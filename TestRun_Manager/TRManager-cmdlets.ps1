@@ -6,7 +6,7 @@
 # /_/\_\___||___/\__\___|_|   \___/|___|
 #                                       
 #=======================================================================================
-function CancelRunningTestRuns() {
+function CancelRunningTestRuns {
     # Query the DB for any Tests that are not Complete or Assigned for this TestRun Manager.
     write-log -Message "Cancelling running tests" -Logfile $logfile
     $query = "select * from testrun where Status_ID not in ('7','9') and TestRun_Manager_ID = '$TestRunManagerID'"
@@ -25,7 +25,7 @@ function CancelRunningTestRuns() {
     write-log -Message "Finished reviewing Running Test for this TestRun Manager" -Logfile $logfile
 }
 #=======================================================================================
-function RequeueAssignedTests() {
+function RequeueAssignedTests {
     #Query the DB for any tests assigned to this TestRun Mgr.
     write-log -Message "Re-Queueing Assigned Tests before we shut this TestRun Manager down" -Logfile $logfile
     $query = "select * from testrun where Status_ID = 7 and TestRun_Manager_ID = '$TestRunManagerID'"
@@ -44,7 +44,7 @@ function RequeueAssignedTests() {
     write-log -Message "Finished reviewing Requeued Tests." -Logfile $logfile
 }
 #=======================================================================================
-function StartAssignedTests() {
+function StartAssignedTests {
     # Check to see if the Testrun Manager is at its Max
     $query = "select * from testrun where TestRun_Manager_ID like '$TestRunManagerID' and Status_ID like 8"
     $RunningTestData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
@@ -62,17 +62,29 @@ function StartAssignedTests() {
                 $TestRun_ID = $assignedTest.ID
                 $TestRun_NAME = $assignedTest.Name
                 $System_ID = $assignedTest.System_ID              
-                #Query the DB for System Information                
-                $query = "select Config_File from systems where ID like '$System_ID'"
-                $SystemData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
-                $Config_Path = $SystemData.Config_File
-                
-                # Start the Workflow Script passing in needed data.
-                write-log -Message "Starting Test: $TestRun_ID TestName: $TestRun_NAME with Config path: $Config_Path" -Logfile $logfile
-                Start-Process -WindowStyle Normal powershell.exe -ArgumentList "-file $workflow_script", "$TestRun_ID"
-                pause 5
-                # Breaking ensures we do not over load the TestRun Manager.
-                Break
+                #Query the DB for System vCenter Information                
+                $query = "select ID,Config_file from targets where system_ID=$System_ID and Target_Type_ID=1"
+                $SystemvCenterData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+                $vCentercount = ($SystemvCenterData | Measure-Object).count
+                foreach($vCenter in $SystemvCenterData){
+                    $vCenter_ID = $vCenter.ID
+                    write-log -Message "This System has: $vCentercount vCenters, starting a process for each." -Logfile $logfile
+                    #Get the Config file for the vCenter
+                    if($vCentercount -eq 1){
+                        write-log -Message "The vCenter does not have a config File, using system Config file" -Logfile $logfile
+                        $query = "select Config_File from systems where ID like '$System_ID'"
+                        $SystemData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+                        $Config_Path = $SystemData.Config_File
+                    } else {
+                        write-log -Message "The vCenter has a config file." -Logfile $logfile
+                        $Config_Path = $vCenter.Config_File
+                    }
+                    
+                    # Start the Workflow Script passing in needed data.
+                    write-log -Message "Starting Test: $TestRun_ID TestName: $TestRun_NAME with Config path: $Config_Path" -Logfile $logfile
+                    Start-Process -Wait -WindowStyle Normal powershell.exe -ArgumentList "-file $workflow_script", "$TestRun_ID", "$vCenter_ID"
+                    pause 3                  
+                }
             }
         } else {
             # There are no assigned tests exit loop.

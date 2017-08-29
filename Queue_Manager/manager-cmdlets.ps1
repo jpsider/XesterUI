@@ -48,7 +48,7 @@ function AbortNotCompleteTests {
 }
 
 #=======================================================================================
-function ReviewSubmittedTests() {
+function ReviewSubmittedTests {
 	# Keep in mind this is just to Assign and Test, not Start one!
 	# Get a list of all of the Submitted Tests
 	write-log -Message "Reviewing list of all Submitted tests." -Logfile $logfile
@@ -68,7 +68,7 @@ function ReviewSubmittedTests() {
 }
 
 #=======================================================================================
-function AssignQueuedTests() {
+function AssignQueuedTests {
 	# Keep in mind this is just to Assign Tests, not Start one!
 	# Get a list of all of the Queued Tests
 	write-log -Message "Reviewing list of all Queued tests." -Logfile $logfile
@@ -80,14 +80,17 @@ function AssignQueuedTests() {
 		$TestRun_Name = $QueuedTest.Name
 		# Query the DB to find any Available sequence 
 		write-log -Message "Determining if there are any TestRun Managers that are Up" -Logfile $logfile
-		$query = "select * from testrun_manager where Status_ID like 2"
+		$query = "select ID from testrun_manager where Status_ID like 2"
 		$TestRunMGRData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
-		$TestRunMGRDataCount = $TestRunMGRData.Count
-		if($TestRunMGRDataCount -ne 0) {
-			$testRun_Manager_ID = $TestRunMGRData[0].ID
-			write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile
-			$query = "update testrun set Status_ID = 7, TestRun_Manager_ID = '$testRun_Manager_ID' where ID = '$Test_ID'"
-			Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+		$TestRunMGRcount = ($TestRunMGRData | Measure-Object).Count
+		if($TestRunMGRcount -ne 0) {
+			:ManagerLoop foreach($Manager in $TestRunMGRData){
+				$testRun_Manager_ID = $Manager.ID
+				write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile
+				$query = "update testrun set Status_ID = 7, TestRun_Manager_ID = '$testRun_Manager_ID' where ID = '$Test_ID'"
+				Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+				break ManagerLoop
+			}
 		}
 		# No available TestRun Managers
 		write-log -Message "There are no TestRun Managers Available" -Logfile $logfile
