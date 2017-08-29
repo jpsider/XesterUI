@@ -41,7 +41,7 @@ INSERT INTO TARGETS (ID,Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password
 VALUES (1,'192.168.2.200',1,'192.168.2.200',11,1,1),(2,'DC01',2,'na',11,1,1),(3,'Cluster01',3,'na',11,1,1),(4,'Win_7_test_VM',4,'na',11,2,1),(5,'Win_10_test_VM',4,'na',11,2,1),
 (6,'CentOS_6_test_vm',4,'na',11,3,1),(7,'Android_4_test_vm',4,'na',11,1,1),(8,'Embedded-vCenter-Server-Appliance',4,'na',11,3,1),(9,'192.168.2.202',6,'192.168.2.202',11,1,1);
 
-
+-- Review below this line
 
 INSERT INTO PASSWORDS (ID, Username, Password)
 VALUES 
