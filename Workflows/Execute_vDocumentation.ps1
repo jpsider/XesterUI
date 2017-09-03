@@ -98,3 +98,35 @@ $query = "update Hardware_Info set
                 NIC_Count = '$NIC_Count'
             where Target_ID=$Target_ID"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+
+
+
+
+# Stuff
+$Target_ID = 11
+$Attribute_Type_ID=1
+$data = Get-Content C:\temp\test.txt
+foreach($line in $data){
+    $Attribute_Name,$Attribute_Value = $line -split ("=")
+    write-host "Attribute Name is $Attribute_Name"
+    write-host "Attribute Value is $Attribute_Value"
+    write-host "Updating DB"
+    $query = "select inv.ID, 
+                    inv.Available_Attributes_ID,
+                    aa.name
+                from inventory_attributes inv
+                join AVAILABLE_ATTRIBUTES aa on inv.Available_Attributes_ID=aa.ID
+                where aa.name like '$Attribute_Name' and inv.Target_ID=$Target_ID"
+    $SingleAttributeData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)            
+    $InventoryAttrID = $SingleAttributeData.ID
+    if($InventoryAttrID -eq $null) {
+        write-host "There is no attribute yet, lets add one!"
+        $query = "INSERT INTO INVENTORY_ATTRIBUTES (Target_ID,Available_Attributes_ID,Attribute_Value) VALUES 
+            ($Target_ID,(Select ID from available_attributes where name like '$Attribute_Name' and Attribute_Type_ID=$Attribute_Type_ID),'$Attribute_Value')"
+        Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+    } else{
+        write-host "The attribute exists, Lets update it!"
+        $query = "update inventory_attributes set Attribute_Value='$Attribute_Value' where ID=$InventoryAttrID"
+        Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+    }
+}
