@@ -10,7 +10,7 @@ if (!empty($_GET['TestName'])) {
 	if(!empty($_GET['Remediate'])){
 		$Remediate=$_GET['Remediate'];
 		include 'components/database.php';
-		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate) VALUES ('$TestName','$System_ID','5','6','1')";
+		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate,Hidden) VALUES ('$TestName','$System_ID','5','6','1',0)";
 		$pdo = Database::connect();
 		$pdo->query($sql);
 		Database::disconnect();
@@ -18,7 +18,7 @@ if (!empty($_GET['TestName'])) {
 		header("Refresh:0 url=index.php");		
 	} else {
 		include 'components/database.php';
-		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID) VALUES ('$TestName','$System_ID','5','6')";
+		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Hidden) VALUES ('$TestName','$System_ID','5','6',0)";
 		$pdo = Database::connect();
 		$pdo->query($sql);
 		Database::disconnect();
@@ -26,9 +26,6 @@ if (!empty($_GET['TestName'])) {
 		header("Refresh:0 url=index.php");
 	}
 } else {
-	if (!empty($_GET['System_ID'])) {
-		$System_ID=$_GET['System_ID'];
-	}
 
 ?>
 <script> 
@@ -52,7 +49,6 @@ if (!empty($_GET['TestName'])) {
 							<tr>
 							<th>ID</th>
 							<th>Name</th>
-							<th>Config_File</th>
 							<th>Status</th>
 							<th>date_modified</th>
 							<th>View Targets</th>
@@ -64,21 +60,32 @@ if (!empty($_GET['TestName'])) {
 							<?php 
 							include 'components/database.php';
 							$pdo = Database::connect();
-							$sql = "select sys.ID, " 
+							if (!empty($_GET['System_ID'])) {
+								$System_ID=$_GET['System_ID'];
+								$sql = "select sys.ID, " 
 										. "sys.SYSTEM_Name, "
-										. "sys.Config_File, "
+										. "sys.Status_ID, "
+										. "sys.date_modified, "																																			
+										. "s.Status, "
+										. "s.HtmlColor "
+									. "from SYSTEMS sys "
+									. "join x_status s on sys.Status_ID=s.ID "
+									. "where sys.ID like '$System_ID'";
+							} else {
+								$sql = "select sys.ID, " 
+										. "sys.SYSTEM_Name, "
 										. "sys.Status_ID, "
 										. "sys.date_modified, "																																			
 										. "s.Status, "
 										. "s.HtmlColor "
 									. "from SYSTEMS sys "
 									. "join x_status s on sys.Status_ID=s.ID ";
+							}
 	
 							foreach ($pdo->query($sql) as $row) {
 								echo '<tr>';
 								echo '<td>'. $row['ID'] . '</td>';
 								echo '<td>'. $row['SYSTEM_Name'] . '</td>';
-								echo '<td>'. $row['Config_File'] . '</td>';
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 								echo '<td><form action="System_Targets.php" method="get"><input type="hidden" name="System_ID" value='.$row['ID'].'><input type="hidden" name="SYSTEM_Name" value='.$row['SYSTEM_Name'].'><input type="submit" class="btn btn-success" value="View Targets"></form></td>';
