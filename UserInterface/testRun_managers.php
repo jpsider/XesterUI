@@ -38,6 +38,7 @@
 							<th>Wait</th>
 							<th>Max_Concurrent</th>
 							<th>LogFile</th>
+							<th>Heartbeat</th>
 							<th>date_modified</th>
 							<th>Action</th>
 							</tr>
@@ -53,6 +54,7 @@
 										. 's.HtmlColor, '
 										. 'tm.Wait, '
 										. 'tm.Log_File, '
+										. 'tm.Heartbeat, '
 										. 'tm.date_modified '
 									. 'from testrun_manager tm '
 									. 'join X_status s on tm.Status_ID=s.ID ';
@@ -64,6 +66,7 @@
 								echo '<td>'. $row['Wait'] . '</td>';
 								echo '<td>'. $row['Max_Concurrent'] . '</td>';
 								echo '<td><form action="singleLogByName.php" method="get"><input type="hidden" name="Log_File" value='.$row['Log_File'].'><input type="submit" class="btn btn-info" value="View Log"></form></td>';
+								echo '<td>'. $row['Heartbeat'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 							   	echo '<td>';							   	
 								if ($row['Status_ID'] == 1) {

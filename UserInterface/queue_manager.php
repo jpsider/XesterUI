@@ -36,6 +36,7 @@
 							<th>Wait</th>
 							<th>Status</th>
 							<th>Log_File</th>
+							<th>HeartBeat</th>
 							<th>date_modified</th>
 							<th>Action</th>
 							</tr>
@@ -48,6 +49,7 @@
 										. 'qm.Status_ID, '
 										. 'qm.Wait, '
 										. 'qm.Log_File as Qman_Log, '
+										. 'qm.Heartbeat, '
 										. 'qm.date_modified, '
 										. 's.HtmlColor, '
 										. 's.Status '
@@ -60,6 +62,7 @@
 								echo '<td>'. $row['Wait'] . '</td>';
 								echo '<td style=background-color:'. $row['HtmlColor'] . '>'. $row['Status'] . '</td>';
 								echo '<td><form action="singleLogByName.php" method="get"><input type="hidden" name="Log_File" value='.$row['Qman_Log'].'><input type="submit" class="btn btn-info" value="View Log"></form></td>';
+								echo '<td>'. $row['Heartbeat'] . '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 								echo '<td width=250>';
 								if ($row['Status_ID'] == 1) {
