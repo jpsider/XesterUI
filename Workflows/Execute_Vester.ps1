@@ -43,8 +43,7 @@ $query = "Select tr.ID,
             tr.Name, 
             tr.System_ID, 
             tr.Remediate, 
-            sys.System_Name, 
-            sys.Config_File
+            sys.System_Name
             from TESTRUN tr
             join SYSTEMS sys on tr.System_ID=sys.ID 
             where tr.ID like '$TestRun_ID'"
@@ -53,7 +52,6 @@ $TestRun_Name = $TestRunData.Name
 $TestRun_System_ID = $TestRunData.System_ID
 $TestRun_Remediate = $TestRunData.Remediate
 $TestRun_System_Name = $TestRunData.System_Name
-#$TestRun_Config_File = $TestRunData.Config_File
 
 #=======================================================================================
 # create a results Directory and start a log file
