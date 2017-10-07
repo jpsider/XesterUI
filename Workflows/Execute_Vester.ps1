@@ -34,7 +34,6 @@ start-sleep -s 3
 # Mark the test as Running
 $query = "update testrun set STATUS_ID = 8 where ID like '$TestRun_ID'"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
-
 Pause 3
 
 #=======================================================================================
