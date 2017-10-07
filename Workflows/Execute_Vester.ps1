@@ -96,7 +96,7 @@ Pause 3
 #=======================================================================================
 # Connect to the vCenter
 write-log -Message "Connecting to vCenter" -Logfile $logfile
-Connect-VIServer -Server $vc_ip -User $vc_un -Password $vc_pw
+Connect-VIServer -Server $vc_name -User $vc_un -Password $vc_pw
 
 # TODO - Try/catch block in future. or write cmdlets file 
 
@@ -115,7 +115,7 @@ if($TestRun_Remediate -eq 1){
 #=======================================================================================
 # Disconnect from the vCenter
 write-log -Message "Disconnecting from vCenter." -Logfile $logfile
-Disconnect-VIServer -Server $vc_ip -Confirm:$false
+Disconnect-VIServer -Server $vc_name -Confirm:$false
 
 #=======================================================================================
 # Parse the XML file to input the results to the Database
