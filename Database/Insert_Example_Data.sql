@@ -32,10 +32,10 @@ INSERT INTO PASSWORDS (ID, Username, Password)
 VALUES (1,'administrator@corp.local','VMware1!'),(2,'administrator','BelayTech2015'),(3,'root','BelayTech2015');
 
 INSERT INTO Target_Types (ID, Name)
-VALUES (1,'vcenter'),(2,'DataCenter'),(3,'Cluster'),(4,'VM'),(5,'vds'),(6,'Host');
+VALUES (1,'vcenter'),(2,'DataCenter'),(3,'Cluster'),(4,'VM'),(5,'vds'),(6,'Host'),(7,'DSCluster'),(8,'Network');
 
-INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
-VALUES (1,'HomeLab','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.1.0\\Configs\\Config.json',11);
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,STATUS_ID)
+VALUES (1,'HomeLab',11);
 
 INSERT INTO TARGETS (ID,Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID)
 VALUES (1,'192.168.2.200',1,'192.168.2.200',11,1,1),(2,'DC01',2,'na',11,1,1),(3,'Cluster01',3,'na',11,1,1),(4,'Win_7_test_VM',4,'na',11,2,1),(5,'Win_10_test_VM',4,'na',11,2,1),
@@ -48,16 +48,16 @@ VALUES
 (4,'team9','VMware1!'),
 (5,'administrator@vsphere.local','VMware1!');
 
-INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
-VALUES (2,'Hackathon','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config.json',11);
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,STATUS_ID)
+VALUES (2,'Hackathon',11);
 
 INSERT INTO TARGETS (Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID,Config_File)
 VALUES ('192.168.9.10',1,'192.168.9.10',11,4,2,'C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config.json');
 
 
 
-INSERT INTO SYSTEMS (ID,SYSTEM_Name,Config_File,STATUS_ID)
-VALUES (3,'Hackathon_all','C:\\Program Files\\WindowsPowerShell\\Modules\\Vester\\1.2.0\\Configs\\Hackathon_Config_all.json',11);
+INSERT INTO SYSTEMS (ID,SYSTEM_Name,STATUS_ID)
+VALUES (3,'Hackathon_all',11);
 
 INSERT INTO TARGETS (Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID,Config_File)
 VALUES 

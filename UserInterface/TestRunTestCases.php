@@ -82,7 +82,7 @@
 									echo '<td style=background-color:'. $row['Result_Color'] . '><form action="ViewStacktrace.php" method="get"><input type="hidden" name="testcase_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View StackTrace"></form>';
 									echo '<form action="systems.php" method="get"><input type="hidden" name="System_ID" value='.$row['System_ID'].'><input type="submit" class="btn btn-success" value="Remediate"></form></td>';
 								} else {
-									echo '<td><input type="submit" class="btn btn-success" value="ReRun"></form></td>';
+									echo '<td> </td>';
 								}								
 								echo '</tr>';
 							}
