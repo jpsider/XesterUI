@@ -9,9 +9,10 @@
 		$Target_Type_ID=$_GET['Target_Type_ID'];
 		$Password_ID=$_GET['Password_ID'];
 		$System_ID=$_GET['System_ID'];
+		$ConfigPath=$_GET['ConfigPath'];
 		include 'components/database.php';
 		// Update the database to set the test to aborted
-		$sql = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID) VALUES ('$TargetName','$Target_Type_ID','11','$Password_ID','$System_ID')";
+		$sql = "insert into targets (Target_Name,Target_Type_ID,Status_ID,Password_ID,System_ID,Config_File) VALUES ('$TargetName','$Target_Type_ID','11','$Password_ID','$System_ID','$ConfigPath')";
 		$pdo = Database::connect();
 		$pdo->query($sql);
 		//Send the user back to the stme page (without get)
@@ -35,13 +36,13 @@
 					<table id="extmple" class="table table-striped table-bordered">
 							<tr>
 							<th>System Name</th>
-							<th></th>
+							<th>Config.json Path</th>
 							<th></th>
 							</tr>
 							<tr>
 							<form action="addTarget.php" method="get">
 							<td><input type="text" name="TargetName" value="Enter New Target"></td>
-							<td></td>		
+							<td><input type="text" name="ConfigPath" value="Enter Config.json path"></td>		
 							<td></td>
 							</tr>
 							<tr>
