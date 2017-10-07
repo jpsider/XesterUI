@@ -31,6 +31,7 @@
 							<th>date_modified</th>
 							<th>Action</th>
 							<th>View TestCases</th>
+							<th>Config Path</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -44,6 +45,7 @@
 										. "t.Status_ID, "
 										. "t.date_modified, "													
 										. "t.System_ID, "																							
+										. "t.Config_File, "																							
 										. "s.Status, "
 										. "s.HtmlColor, "
 										. "sys.SYSTEM_Name, "
@@ -66,6 +68,7 @@
 								echo '<input type="submit" class="btn btn-success" value="Submit TestRun"></form>';
 								echo '</td>';
 								echo '<td><form action="targetTestCases.php" method="get"><input type="hidden" name="Target_Id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="History"></form></td>';
+								echo '<td>'. $row['Config_File'] . '</td>';								
 								echo '</tr>';
 							}
 							Database::disconnect();

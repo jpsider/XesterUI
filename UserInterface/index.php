@@ -3,6 +3,49 @@
 <?php
 	require_once 'components/header.php';
 ?>
+<?php
+	if (!empty($_GET['HIDE_RECORD'])) {
+		$testrun_id=$_GET['testrun_id'];
+		include 'components/database.php';
+		// Update the database to set the test to hidden
+		$sql = "UPDATE TESTRUN SET HIDDEN=1 where ID=$testrun_id";
+		$pdo = Database::connect();
+		$pdo->query($sql);
+		//Send the user back to the same page (without get)
+		header("Refresh:0 url=index.php");
+	} else{
+	}
+		
+	if (!empty($_GET['RERUN'])) {
+		$testrun_id=$_GET['testrun_id'];
+		include 'components/database.php';
+		// Update the database to set the test to hidden
+		$sql = "UPDATE TESTRUN SET HIDDEN=1 where ID=$testrun_id";
+		$pdo = Database::connect();
+		$pdo->query($sql);
+		//Submit new testrun
+		$TestName=$_GET['TestName'];
+		$System_ID=$_GET['System_ID'];
+		if(!empty($_GET['Remediate'])){
+			$Remediate=$_GET['Remediate'];
+			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate,Hidden) VALUES ('$TestName','$System_ID','5','6','1',0)";
+			$pdo = Database::connect();
+			$pdo->query($sql);
+			Database::disconnect();
+			// Send the user back to the same page
+			header("Refresh:0 url=index.php");		
+		} else {
+			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Hidden) VALUES ('$TestName','$System_ID','5','6',0)";
+			$pdo = Database::connect();
+			$pdo->query($sql);
+			Database::disconnect();
+			// Send the user back to the same page
+		}
+			header("Refresh:0 url=index.php");
+		//Send the user back to the same page (without get)
+		header("Refresh:0 url=index.php");
+	} else {
+?>
 <script>
     var reloading;
     var refresh_time = 30000;
@@ -59,6 +102,8 @@
 							<th>date_modified</th>
 							<th>TestSuites</th>
 							<th>TestCases</th>
+							<th>Hide</th>
+							<th>ReRun</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -75,7 +120,9 @@
 										. 'ts.Failures, '													
 										. 'ts.Log_file, '													
 										. 'ts.XML_file, '													
-										. 'ts.Elapsed_Time, '													
+										. 'ts.Elapsed_Time, '
+										. 'ts.Remediate, '
+										. 'ts.Hidden, '													
 										. 's.Status, '
 										. 's.HtmlColor, '
 										. 'r.Name as Result, '
@@ -85,6 +132,7 @@
 									. 'join x_status s on ts.Status_ID=s.ID '
 									. 'join X_result r on ts.Result_ID=r.ID '
 									. 'join systems sys on ts.System_ID=sys.ID '
+									. 'where ts.Hidden=0 '
 									. 'order by ts.ID DESC ';
 	
 							foreach ($pdo->query($sql) as $row) {
@@ -104,8 +152,9 @@
 								echo '<form action="SingleTestRun.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestRun"></form>';
 								echo '</td>';
 								echo '<td width=250>';
-								echo '<form action="TestRunTestCases.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestCases"></form>';
-								echo '</td>';								
+								echo '<form action="TestRunTestCases.php" method="get"><input type="hidden" name="testRun_id" value='.$row['ID'].'><input type="submit" class="btn btn-info" value="View TestCases"></form></td>';
+								echo '<td><form action="index.php" method="get"><input type="hidden" name="HIDE_RECORD" value="TRUE"><input type="hidden" name="testrun_id" value='.$row['ID'].'><input type="submit" class="btn btn-primary" value="HIDE"></form></td>';								
+								echo '<td><form action="index.php" method="get"><input type="hidden" name="RERUN" value="TRUE"><input type="hidden" name="TestName" value='.$row['Name'].'><input type="hidden" name="System_ID" value='.$row['System_ID'].'><input type="hidden" name="Remediate" value='.$row['Remediate'].'><input type="hidden" name="testrun_id" value='.$row['ID'].'><input type="submit" class="btn btn-warning" value="RERUN"></form></td>';
 								echo '</tr>';
 							}
 							Database::disconnect();
@@ -119,5 +168,8 @@
 </body>
 <?php
 	require_once 'components/footer.php';
+?>
+<?php
+  }
 ?>
 </html>
