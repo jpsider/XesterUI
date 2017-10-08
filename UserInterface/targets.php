@@ -25,7 +25,7 @@
 							<th>ID</th>
 							<th>Name</th>
 							<th>IP_Address</th>
-							<th>Target_Type_ID</th>
+							<th>Target_Type</th>							
 							<th>System_Name</th>
 							<th>Status</th>
 							<th>date_modified</th>
