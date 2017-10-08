@@ -17,10 +17,7 @@ $SCRIPTDIR = split-path $MYINV.MyCommand.Path
 # import logging, connection details, and mysql cmdlets.
 . "$SCRIPTDIR\..\utilities\general-cmdlets.ps1"
 . "$SCRIPTDIR\..\utilities\connection_details.ps1"
-Import-Module "C:\OPEN_PROJECTS\PowerLumber\PowerLumber.psm1"
-Import-Module "C:\OPEN_PROJECTS\PowerWamp\powerWamp.psm1"
-Import-Module Vester
-#Import-Module "C:\OPEN_PROJECTS\Vester\Vester\vester.psm1"
+Import-Module Vester,PowerWamp,PowerLumber
 Get-Module -ListAvailable vmware* | Import-Module
 
 #=======================================================================================
@@ -57,7 +54,7 @@ $TestRun_System_Name = $TestRunData.System_Name
 $UniqueIdentity = $TestRun_Name + "_" + $TestRun_ID
 $resultsDir = "c:\XesterUI\TestRuns\$UniqueIdentity"
 $Logfile = "$resultsDir\testrun.log"
-$resultsFile = "$resultsDir\results.xml"
+$resultsFile = "$resultsDir\vCenter_" + $vCenter_ID + "results.xml"
 
 write-log -Message "Add the Log file to the DB." -Logfile $logfile
 $DBLogPath = $LogFile.Replace('\',"\\")
@@ -114,6 +111,8 @@ write-log -Message "Disconnecting from vCenter." -Logfile $logfile
 Disconnect-VIServer -Server $vc_name -Confirm:$false
 
 #=======================================================================================
+# It will be useful to use PassThru in the future, instead of parsing the xml.
+#=======================================================================================
 # Parse the XML file to input the results to the Database
 write-log -Message "Parsing the results and updating the DB." -Logfile $logfile
 
@@ -121,6 +120,24 @@ write-log -Message "Import the XML file and add the Path to the DB." -Logfile $l
 $DBXMLPath = $resultsFile.Replace('\',"\\")
 $query = "update TESTRUN set XML_File = '$DBXMLPath' where ID like '$TestRun_ID'"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
+
+# Get the current Result set from the DB.
+$query = "select Total_Tests,Errors,Failures,NotRun,Inconclusive,Ignored,Skipped,Invalid from TESTRUN where ID like '$TestRun_ID'"
+$BaseTestRunData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
+
+if((($BaseTestRunData.Total_Tests).getType()).name -eq "DBNull") {$BaseTotalTests = 0} else {$BaseTotalTests = $BaseTestRunData.Total_Tests}
+if((($BaseTestRunData.Errors).getType()).name -eq "DBNull") {$BaseTotalErrors = 0} else {$BaseTotalErrors = $BaseTestRunData.Errors}
+if((($BaseTestRunData.Failures).getType()).name -eq "DBNull") {$BaseTotalFailures = 0} else {$BaseTotalFailures = $BaseTestRunData.Failures}
+if((($BaseTestRunData.NotRun).getType()).name -eq "DBNull") {$BaseTotalNotRun = 0} else {$BaseTotalNotRun = $BaseTestRunData.NotRun}
+if((($BaseTestRunData.Inconclusive).getType()).name -eq "DBNull") {$BaseTotalInconclusive = 0} else {$BaseTotalInconclusive = $BaseTestRunData.Inconclusive}
+if((($BaseTestRunData.Ignored).getType()).name -eq "DBNull") {$BaseTotalIgnored = 0} else {$BaseTotalIgnored = $BaseTestRunData.Ignored}
+if((($BaseTestRunData.Skipped).getType()).name -eq "DBNull") {$BaseTotalSkipped = 0} else {$BaseTotalSkipped = $BaseTestRunData.Skipped}
+if((($BaseTestRunData.Invalid).getType()).name -eq "DBNull") {$BaseTotalInvalid = 0} else {$BaseTotalInvalid = $BaseTestRunData.Invalid}
+
+#Need to change the DB type before this will work correctly
+#if((($BaseTestRunData.Elapsed_Time).getType()).name -eq "Double") {$BaseTotalElapsed_Time = 0} else {$BaseTotalElapsed_Time = $BaseTestRunData.'Test-suite'.time}
+
+# Do I need to have a single xml file? or one per vcenter?
 
 # TODO - Should probably verify it exists first.
 [xml]$xmlData = get-content "$resultsFile"
@@ -134,21 +151,35 @@ $TotalInconclusive = $testRundata.inconclusive
 $TotalIgnored = $testRundata.ignored
 $TotalSkipped = $testRundata.skipped 
 $TotalInvalid = $testRundata.invalid
+
+# May need to update this to a float or double
 $ElapsedTime = $testRundata.'Test-suite'.time
 
-if($TotalFailures -ne 0) {
+$TR_Final_Total_Tests = $BaseTotalTests + $TotalTests
+$TR_Final_Errors = $BaseTotalErrors + $TotalErrors
+$TR_Final_Failures = $BaseTotalFailures + $TotalFailures
+$TR_Final_NotRun = $BaseTotalNotRun + $TotalNotRun
+$TR_Final_Inconclusive = $BaseTotalInconclusive + $TotalInconclusive
+$TR_Final_Ignored = $BaseTotalIgnored + $TotalIgnored
+$TR_Final_Skipped = $BaseTotalSkipped + $TotalSkipped
+$TR_Final_Invalid = $BaseTotalInvalid + $TotalInvalid
+
+# Need to update type in DB before this will work - Also see the insert to be updated below!
+#$TR_Final_ElapsedTime = $BaseTotalElapsedTime + $ElapsedTime
+
+if($TR_Final_Failures -ne 0) {
     $Result = 2
 } else {
     $Result = 1
 }
 
 write-log -Message "Adding top level TestRun results to DB." -Logfile $logfile
-$query = "update TESTRUN set RESULT_ID='$Result',Total_Tests='$TotalTests',
-    Errors='$TotalErrors',Failures='$TotalFailures',NotRun='$TotalNotRun',inconclusive='$TotalInconclusive',
-    Ignored='$TotalIgnored',Skipped='$TotalSkipped',Invalid='$TotalInvalid',Elapsed_Time='$ElapsedTime' where ID like $testRun_id"
+$query = "update TESTRUN set RESULT_ID='$Result',Total_Tests='$TR_Final_Total_Tests',
+    Errors='$TR_Final_TotalErrors',Failures='$TR_Final_TotalFailures',NotRun='$TR_Final_TotalNotRun',inconclusive='$TR_Final_TotalInconclusive',
+    Ignored='$TR_Final_TotalIgnored',Skipped='$TR_Final_TotalSkipped',Invalid='$TR_Final_TotalInvalid',Elapsed_Time='$ElapsedTime' where ID like $testRun_id"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
-write-log -Message "------TEST RUN DATA-------" -Logfile $logfile
+write-log -Message "------Single TEST RUN DATA-------" -Logfile $logfile
 write-log -Message "TestRun_ID $TestRun_ID" -Logfile $logfile
 write-log -Message "Total Tests $TotalTests" -Logfile $logfile
 write-log -Message "Errors $TotalErrors" -Logfile $logfile
@@ -159,7 +190,20 @@ write-log -Message "Ignored $TotalIgnored" -Logfile $logfile
 write-log -Message "Skipped $TotalSkipped" -Logfile $logfile
 write-log -Message "Invalid $TotalInvalid" -Logfile $logfile
 write-log -Message "Elapsed Time $ElapsedTime" -Logfile $logfile
-write-log -Message "------ END TEST RUN DATA-------" -Logfile $logfile
+write-log -Message "------ END Single TEST RUN DATA-------" -Logfile $logfile
+
+write-log -Message "------System TEST RUN DATA-------" -Logfile $logfile
+write-log -Message "TestRun_ID $TestRun_ID" -Logfile $logfile
+write-log -Message "Total Tests $TR_Final_Total_Tests" -Logfile $logfile
+write-log -Message "Errors $TR_Final_Errors" -Logfile $logfile
+write-log -Message "Failures $TR_Final_Failures" -Logfile $logfile
+write-log -Message "NotRun $TR_Final_NotRun" -Logfile $logfile
+write-log -Message "Inclusive $TR_Final_Inconclusive" -Logfile $logfile
+write-log -Message "Ignored $TR_Final_Ignored" -Logfile $logfile
+write-log -Message "Skipped $TR_Final_Skipped" -Logfile $logfile
+write-log -Message "Invalid $TR_Final_Invalid" -Logfile $logfile
+#write-log -Message "Elapsed Time $TR_Final_ElapsedTime" -Logfile $logfile
+write-log -Message "------ END System TEST RUN DATA-------" -Logfile $logfile
 
 write-log -Message "Processing TestSuite/TestCase data." -Logfile $logfile
 $TestSuites = @($xmlData.'test-results'.'test-suite'.results.'test-suite'.results.'test-suite')
@@ -268,7 +312,7 @@ foreach($testSuite in $TestSuites) {
     write-log -Message "----------End TestSuite----------" -Logfile $logfile
 }
 # Verify that the number of total test is equal to the number of test cases for this test run.
-write-log -Message "Total Tests from XML: $TotalTests" -Logfile $logfile
+write-log -Message "Total Tests from System XML Files: $TR_Final_Total_Tests" -Logfile $logfile
 write-log -Message "Total Testscases from XML: $TCcount" -Logfile $logfile
 $query = "select tc.ID,   
 				 tc.Name, 
