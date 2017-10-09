@@ -106,7 +106,7 @@ CREATE TABLE TESTRUN (
   Ignored int(11),
   Skipped int(11),
   Invalid int(11),
-  Elapsed_Time float(255),
+  Elapsed_Time float(25,6),
   Log_file varchar(255),
   XML_file varchar(255),
   TestRun_Manager_ID int(11),
