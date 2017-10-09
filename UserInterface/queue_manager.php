@@ -54,7 +54,7 @@
 										. 's.HtmlColor, '
 										. 's.Status '
 									. 'from QUEUE_MANAGER qm '
-									. 'join x_status s on qm.Status_ID=s.ID ';
+									. 'join STATUS s on qm.Status_ID=s.ID ';
 	
 							foreach ($pdo->query($sql) as $row) {
 								echo '<tr>';

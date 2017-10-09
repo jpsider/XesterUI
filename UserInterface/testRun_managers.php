@@ -57,7 +57,7 @@
 										. 'tm.Heartbeat, '
 										. 'tm.date_modified '
 									. 'from testrun_manager tm '
-									. 'join X_status s on tm.Status_ID=s.ID ';
+									. 'join STATUS s on tm.Status_ID=s.ID ';
 						
 							foreach ($pdo->query($sql) as $row) {
 								echo '<tr>';

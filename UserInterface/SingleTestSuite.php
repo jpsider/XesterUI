@@ -57,8 +57,8 @@
 										. "t.Target_Name, "
 										. "t.IP_Address "
 									. "from TESTCASES tc "
-									. "join x_status s on tc.Status_ID=s.ID "
-									. "join X_result r on tc.Result_ID=r.ID "
+									. "join STATUS s on tc.Status_ID=s.ID "
+									. "join RESULTS r on tc.Result_ID=r.ID "
 									. "join targets t on tc.Target_ID=t.ID "
 									. "where tc.TEST_SUITE_ID like $TestsuiteId ";
 	

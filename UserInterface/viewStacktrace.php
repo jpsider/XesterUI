@@ -55,8 +55,8 @@
 										. "st.Stacktrace "
 									. "from STACKTRACE st "
 									. "join testcases tc on st.Testcase_ID=tc.ID "
-									. "join x_status s on tc.Status_ID=s.ID "
-									. "join X_result r on tc.Result_ID=r.ID "
+									. "join STATUS s on tc.Status_ID=s.ID "
+									. "join RESULTS r on tc.Result_ID=r.ID "
 									. "join targets t on tc.Target_ID=t.ID "
 									. "where st.testcase_id like $testcase_id ";
 	

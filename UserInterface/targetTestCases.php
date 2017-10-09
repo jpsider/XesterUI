@@ -61,8 +61,8 @@
 										. "t.ID as Target_Id, "
 										. "ts.Name as TestSuiteName "
 									. "from TESTCASES tc "
-									. "join x_status s on tc.Status_ID=s.ID "
-									. "join X_result r on tc.Result_ID=r.ID "
+									. "join STATUS s on tc.Status_ID=s.ID "
+									. "join RESULTS r on tc.Result_ID=r.ID "
 									. "join targets t on tc.Target_ID=t.ID "
 									. "join testsuites ts on tc.TEST_SUITE_ID=ts.ID "
 									. "where Target_Id like $Target_Id ";

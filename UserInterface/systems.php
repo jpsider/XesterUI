@@ -69,7 +69,7 @@ if (!empty($_GET['TestName'])) {
 										. "s.Status, "
 										. "s.HtmlColor "
 									. "from SYSTEMS sys "
-									. "join x_status s on sys.Status_ID=s.ID "
+									. "join STATUS s on sys.Status_ID=s.ID "
 									. "where sys.ID like '$System_ID'";
 							} else {
 								$sql = "select sys.ID, " 
@@ -79,7 +79,7 @@ if (!empty($_GET['TestName'])) {
 										. "s.Status, "
 										. "s.HtmlColor "
 									. "from SYSTEMS sys "
-									. "join x_status s on sys.Status_ID=s.ID ";
+									. "join STATUS s on sys.Status_ID=s.ID ";
 							}
 	
 							foreach ($pdo->query($sql) as $row) {

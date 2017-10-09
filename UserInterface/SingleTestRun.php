@@ -54,8 +54,8 @@
 										. "r.Name as Result, "
 										. "r.HtmlColor as Result_Color "
 									. "from TESTSUITES ts "
-									. "join x_status s on ts.Status_ID=s.ID "
-									. "join X_result r on ts.Result_ID=r.ID "
+									. "join STATUS s on ts.Status_ID=s.ID "
+									. "join RESULTS r on ts.Result_ID=r.ID "
 									. "where ts.TestRun_ID like $TestRunId ";
 	
 							foreach ($pdo->query($sql) as $row) {

@@ -51,7 +51,7 @@
 										. "sys.SYSTEM_Name, "
 										. "tt.Name as Target_Type_Name "
 									. "from TARGETS t "
-									. "join x_status s on t.Status_ID=s.ID "
+									. "join STATUS s on t.Status_ID=s.ID "
 									. "join SYSTEMS sys on t.System_ID=sys.ID "
 									. "join Target_Types tt on t.Target_Type_ID=tt.ID ";
 	

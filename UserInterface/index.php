@@ -4,25 +4,26 @@
 	require_once 'components/header.php';
 ?>
 <?php
+	include 'components/database.php';
 	if (!empty($_GET['HIDE_RECORD'])) {
 		$testrun_id=$_GET['testrun_id'];
-		include 'components/database.php';
 		// Update the database to set the test to hidden
 		$sql = "UPDATE TESTRUN SET HIDDEN=1 where ID=$testrun_id";
 		$pdo = Database::connect();
 		$pdo->query($sql);
+		Database::disconnect();
 		//Send the user back to the same page (without get)
-		header("Refresh:0 url=index.php");
+		header("Refresh:10 url=index.php");
 	} else{
 	}
 		
 	if (!empty($_GET['RERUN'])) {
 		$testrun_id=$_GET['testrun_id'];
-		include 'components/database.php';
 		// Update the database to set the test to hidden
 		$sql = "UPDATE TESTRUN SET HIDDEN=1 where ID=$testrun_id";
 		$pdo = Database::connect();
 		$pdo->query($sql);
+		Database::disconnect();
 		//Submit new testrun
 		$TestName=$_GET['TestName'];
 		$System_ID=$_GET['System_ID'];
@@ -108,7 +109,6 @@
 						</thead>
 						<tbody>
 							<?php 
-							include 'components/database.php';
 							$pdo = Database::connect();
 							$sql = 'select ts.ID, ' 
 										. 'ts.Name, '
@@ -129,8 +129,8 @@
 										. 'r.HtmlColor as Result_Color, '
 										. 'sys.SYSTEM_Name '
 									. 'from TESTRUN ts '
-									. 'join x_status s on ts.Status_ID=s.ID '
-									. 'join X_result r on ts.Result_ID=r.ID '
+									. 'join STATUS s on ts.Status_ID=s.ID '
+									. 'join RESULTS r on ts.Result_ID=r.ID '
 									. 'join systems sys on ts.System_ID=sys.ID '
 									. 'where ts.Hidden=0 '
 									. 'order by ts.ID DESC ';
