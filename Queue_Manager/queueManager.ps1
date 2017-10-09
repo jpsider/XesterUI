@@ -71,6 +71,10 @@ do {
 	$ManagerWait = $ManagerData[0].Wait
 	write-log -Message "Manager Status is : ${ManagerStatus}" -Logfile $logfile
 	write-log -Message "Manager Wait is : ${ManagerWait}" -Logfile $logfile
+	Write-Log -Message "Updating HeartBeat" -Logfile $logfile
+	$CurrentHeartBeat = get-date
+	$query = "update queue_manager set heartbeat='$CurrentHeartBeat' where ID like '1'"
+	Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 	####################################
 	# Set Status to Starting up  

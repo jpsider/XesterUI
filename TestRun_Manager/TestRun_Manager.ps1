@@ -75,6 +75,10 @@ do {
 	write-log -Message "TestRun Manager Status is : ${TestRunManagerStatus}" -Logfile $logfile
 	write-log -Message "TestRun Manager Wait is : ${TestRunManagerWait}" -Logfile $logfile
 	write-log -Message "TestRun Manager Max_Concurrent is : ${TestRunMGR_Max_Concurrent}" -Logfile $logfile
+	Write-Log -Message "Updating HeartBeat" -Logfile $logfile
+	$CurrentHeartBeat = get-date
+	$query = "update testrun_manager set heartbeat='$CurrentHeartBeat' where ID like '$TestRunManagerID'"
+	Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 	####################################
 	# Set Status to Starting up  
