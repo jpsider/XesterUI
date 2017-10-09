@@ -16,8 +16,7 @@ $SCRIPTDIR = split-path $MYINV.MyCommand.Path
 . "$SCRIPTDIR\..\utilities\general-cmdlets.ps1"
 . "$SCRIPTDIR\..\utilities\connection_details.ps1"
 . "$SCRIPTDIR\TRManager-cmdlets.ps1"
-Import-Module "C:\OPEN_PROJECTS\PowerLumber\PowerLumber.psm1"
-Import-Module "C:\OPEN_PROJECTS\PowerWamp\powerWamp.psm1"
+Import-Module PowerWamp,PowerLumber
 $workflow_script = "C:\OPEN_PROJECTS\XesterUI\Workflows\Execute_Vester.ps1"
 # Set Shell Title
 $host.ui.RawUI.WindowTitle = "TestRun_Manager"

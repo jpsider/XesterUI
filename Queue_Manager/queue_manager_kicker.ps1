@@ -9,8 +9,7 @@ $SCRIPTDIR = split-path $MYINV.MyCommand.Path
 . "$SCRIPTDIR\..\utilities\general-cmdlets.ps1"
 . "$SCRIPTDIR\..\utilities\connection_details.ps1"
 . "$SCRIPTDIR\manager-cmdlets.ps1"
-Import-Module C:\OPEN_PROJECTS\PowerLumber\PowerLumber.psm1
-Import-Module C:\OPEN_PROJECTS\PowerWamp\powerWamp.psm1
+Import-Module PowerWamp,PowerLumber
 
 #=======================================================================================
 $KickerRunning = $true

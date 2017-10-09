@@ -66,20 +66,14 @@ function StartAssignedTests {
                 $query = "select ID,Config_file from targets where system_ID=$System_ID and Target_Type_ID=1"
                 $SystemvCenterData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
                 $vCentercount = ($SystemvCenterData | Measure-Object).count
+                write-log -Message "This System has: $vCentercount vCenters, starting a process for each." -Logfile $logfile
                 foreach($vCenter in $SystemvCenterData){
                     $vCenter_ID = $vCenter.ID
-                    write-log -Message "This System has: $vCentercount vCenters, starting a process for each." -Logfile $logfile
                     #Get the Config file for the vCenter
-                    if($vCentercount -eq 1){
-                        write-log -Message "The vCenter does not have a config File, using system Config file" -Logfile $logfile
-                        $query = "select Config_File from systems where ID like '$System_ID'"
-                        $SystemData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
-                        $Config_Path = $SystemData.Config_File
-                    } else {
-                        write-log -Message "The vCenter has a config file." -Logfile $logfile
-                        $Config_Path = $vCenter.Config_File
-                    }
-                    
+                    # Need to check for the config file property and the existence on the share.
+                    $Config_Path = $vCenter.Config_File
+                    write-log -Message "The vCenter ID: $vcenter_ID has a config file, starting Tests!" -Logfile $logfile
+
                     # Start the Workflow Script passing in needed data.
                     write-log -Message "Starting Test: $TestRun_ID TestName: $TestRun_NAME with Config path: $Config_Path" -Logfile $logfile
                     Start-Process -Wait -WindowStyle Normal powershell.exe -ArgumentList "-file $workflow_script", "$TestRun_ID", "$vCenter_ID"
