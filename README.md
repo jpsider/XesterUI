@@ -28,12 +28,12 @@ This project will integrate with tools like Pester and Vester.
 
 ## Dependancies  
 
-* [Vester](https://github.com/WahlNetwork/Vester) - clearly! This does all the heavy lifting, performing the tests and producing the output xml. No changes needed!  
-* [PowerWamp](https://github.com/jpsider/PowerWamp) - Powershell MySQL plugin to interact with DB.  
-* [PowerLumber](https://github.com/jpsider/PowerLumber) - Powershell logging module.  
+* [Vester](https://github.com/WahlNetwork/Vester) 1.2.0 - clearly! This does all the heavy lifting, performing the tests and producing the output xml. No changes needed!  
+* [PowerWamp](https://github.com/jpsider/PowerWamp) 3.0.3 - Powershell MySQL plugin to interact with DB.  
+* [PowerLumber](https://github.com/jpsider/PowerLumber) 3.0.0 - Powershell logging module.  
 * Powershell 5.1 - I've not tested older versions.  
-* PowerCLI 6.5 - I've not tested older versions.  
-* Pester 3.X - Not really sure what version, it ships with Powershell 5.1.  
+* PowerCLI 6.5.2 - I've not tested older versions.  
+* Pester 4.0.8 - Not really sure what version, it ships with Powershell 5.1.  
 
 Currently I have only tested in a windows environment. However the 'amp' could be on a linux machine so long as it had access to the same share for viewing logfiles.  
 Review the specific dependancies of these packages for more specific requirements.  
