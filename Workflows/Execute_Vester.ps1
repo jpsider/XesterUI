@@ -77,7 +77,7 @@ $query = "select tg.ID,
             join PASSWORDS pw on tg.Password_ID=pw.ID
             where tg.ID like '$vCenter_ID' and tg.Target_Type_ID like '1'"
 $vCenterData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
-$vc_name = $vCenterData.name
+$vc_name = $vCenterData.Target_Name
 $vc_un = $vCenterData.username
 $vc_pw = $vCenterData.password
 $TestRun_Config_File = $vCenterData.Config_File
@@ -175,8 +175,8 @@ if($TR_Final_Failures -ne 0) {
 
 write-log -Message "Adding top level TestRun results to DB." -Logfile $logfile
 $query = "update TESTRUN set RESULT_ID='$Result',Total_Tests='$TR_Final_Total_Tests',
-    Errors='$TR_Final_TotalErrors',Failures='$TR_Final_TotalFailures',NotRun='$TR_Final_TotalNotRun',inconclusive='$TR_Final_TotalInconclusive',
-    Ignored='$TR_Final_TotalIgnored',Skipped='$TR_Final_TotalSkipped',Invalid='$TR_Final_TotalInvalid',Elapsed_Time='$ElapsedTime' where ID like $testRun_id"
+    Errors='$TR_Final_Errors',Failures='$TR_Final_Failures',NotRun='$TR_Final_NotRun',inconclusive='$TR_Final_Inconclusive',
+    Ignored='$TR_Final_Ignored',Skipped='$TR_Final_Skipped',Invalid='$TR_Final_Invalid',Elapsed_Time='$ElapsedTime' where ID like $testRun_id"
 Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 
 write-log -Message "------Single TEST RUN DATA-------" -Logfile $logfile
@@ -237,7 +237,7 @@ foreach($testSuite in $TestSuites) {
 
     write-log -Message "Adding top level TestSuite results to DB." -Logfile $logfile
     $query = "insert into TESTSUITES (Name,TestRun_ID,STATUS_ID,RESULT_ID,Elapsed_Time,TestCase_Count,Asserts) VALUES ('$TS_NAME','$TestRun_ID',9,'$TS_Result','$TS_Elapsed_Time','$testcases_Count','$TS_Asserts')"
-    $TestSuite_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
+	$TestSuite_ID = @(Invoke-MySQLInsert -Query $query -ConnectionString $MyConnectionString)[1]
 
 	$TestSuiteResultData = $testSuite.results
 	if($TestSuiteResultData -ne "") {    
@@ -313,7 +313,6 @@ foreach($testSuite in $TestSuites) {
 }
 # Verify that the number of total test is equal to the number of test cases for this test run.
 write-log -Message "Total Tests from System XML Files: $TR_Final_Total_Tests" -Logfile $logfile
-write-log -Message "Total Testscases from XML: $TCcount" -Logfile $logfile
 $query = "select tc.ID,   
 				 tc.Name, 
 				 tc.Target_ID, 
@@ -332,15 +331,15 @@ $query = "select tc.ID,
 				 t.IP_Address, 
 				 ts.Name as TestSuiteName 
 			 from TESTCASES tc 
-			 join x_status s on tc.Status_ID=s.ID 
-			 join X_result r on tc.Result_ID=r.ID 
+			 join STATUS s on tc.Status_ID=s.ID 
+			 join RESULTS r on tc.Result_ID=r.ID 
 			 join targets t on tc.Target_ID=t.ID 
 			 join testsuites ts on tc.TEST_SUITE_ID=ts.ID 
 			 where ts.TestRun_ID like $testRun_id and t.System_ID like $TestRun_System_ID"
 $TR_Final_Data = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 $TR_Final_Data_Count = $TR_Final_Data.Count
 
-if($TR_Final_Data_Count -eq $TotalTests) {
+if($TR_Final_Data_Count -eq $TR_Final_Total_Tests) {
     write-log -Message "Finished processing TestRun" -Logfile $logfile
 } else {
     # Numbers don't match, mark the test as Critical.
