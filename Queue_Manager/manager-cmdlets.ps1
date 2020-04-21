@@ -1,11 +1,4 @@
-#=======================================================================================
-# __  __         _            _   _ ___ 
-# \ \/ /___  ___| |_ ___ _ __| | | |_ _|
-#  \  // _ \/ __| __/ _ \ '__| | | || | 
-#  /  \  __/\__ \ ||  __/ |  | |_| || | 
-# /_/\_\___||___/\__\___|_|   \___/|___|
-#                                       
-#=======================================================================================
+# Common Function
 function AbortCANCELLEDTests{
 	$query = "select * from testrun where Status_ID like 10"
 	$CANCELLEDTestData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
@@ -14,16 +7,16 @@ function AbortCANCELLEDTests{
 		foreach ($CANCELLEDTest in $CANCELLEDTestData){
 			$TestRun_ID = $CANCELLEDTest.ID
 			$TestRun_name = $CANCELLEDTest.Name
-			write-log -Message "The Queue Manager is Aborting Test: ${TestRun_name}." -Logfile $logfile
+			write-log -Message "The Queue Manager is Aborting Test: ${TestRun_name}." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 			# Update any Not Complete Test to Aborted
 			$query = "update testrun set Status_ID=9 where ID = $TestRun_ID"
 			Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 		}
 		# Finished Aborting CANCELLED tests
-		write-log -Message "The Queue Manager is finished aborting CANCELLED tests." -Logfile $logfile
+		write-log -Message "The Queue Manager is finished aborting CANCELLED tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	}
 	# There were no CANCELLED tests.
-	write-log -Message "There were no CANCELLED tests." -Logfile $logfile
+	write-log -Message "There were no CANCELLED tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 }
 
 #=======================================================================================
@@ -35,23 +28,23 @@ function AbortNotCompleteTests {
 		foreach ($RunningTest in $RunningTestData){
 			$TestRun_ID = $RunningTest.ID
 			$TestRun_name = $RunningTest.Name
-			write-log -Message "The Queue Manager is Aborting Test: ${TestRun_name}." -Logfile $logfile
+			write-log -Message "The Queue Manager is Aborting Test: ${TestRun_name}." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 			# Update any Not Complete Test to Aborted
 			$query = "update testrun set Status_ID=9 where ID = $TestRun_ID"
 			Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 		}
 		# Finished Aborting non-complete tests
-		write-log -Message "The Queue Manager is finished aborting non-complete tests." -Logfile $logfile
+		write-log -Message "The Queue Manager is finished aborting non-complete tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	}
 	# There were no Non-Complete tests.
-	write-log -Message "There were no non-complete tests." -Logfile $logfile
+	write-log -Message "There were no non-complete tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 }
 
 #=======================================================================================
 function ReviewSubmittedTests {
 	# Keep in mind this is just to Assign and Test, not Start one!
 	# Get a list of all of the Submitted Tests
-	write-log -Message "Reviewing list of all Submitted tests." -Logfile $logfile
+	write-log -Message "Reviewing list of all Submitted tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	$query = "select * from testrun where Status_ID = 5"
 	$SubmittedTestData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 	foreach($SubmittedTest in $SubmittedTestData) {
@@ -59,19 +52,19 @@ function ReviewSubmittedTests {
 		$Test_ID = $SubmittedTest.ID
 		$TestRun_Name = $SubmittedTest.Name
 		# Query the DB to find any Available sequence 
-		write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile
+		write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		$query = "update testrun set Status_ID = 6 where ID = '$Test_ID'"
 		Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 	}
 	# No more Tests to reviewing
-	write-log -Message "Finished reviewing Submitted Tests" -Logfile $logfile
+	write-log -Message "Finished reviewing Submitted Tests" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 }
 
 #=======================================================================================
 function AssignQueuedTests {
 	# Keep in mind this is just to Assign Tests, not Start one!
 	# Get a list of all of the Queued Tests
-	write-log -Message "Reviewing list of all Queued tests." -Logfile $logfile
+	write-log -Message "Reviewing list of all Queued tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	$query = "select * from testrun where Status_ID = 6"
 	$QueuedTestData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 	foreach($QueuedTest in $QueuedTestData) {
@@ -79,32 +72,23 @@ function AssignQueuedTests {
 		$Test_ID = $QueuedTest.ID
 		$TestRun_Name = $QueuedTest.Name
 		# Query the DB to find any Available sequence 
-		write-log -Message "Determining if there are any TestRun Managers that are Up" -Logfile $logfile
+		write-log -Message "Determining if there are any TestRun Managers that are Up" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		$query = "select ID from testrun_manager where Status_ID like 2"
 		$TestRunMGRData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 		$TestRunMGRcount = ($TestRunMGRData | Measure-Object).Count
 		if($TestRunMGRcount -ne 0) {
 			:ManagerLoop foreach($Manager in $TestRunMGRData){
 				$testRun_Manager_ID = $Manager.ID
-				write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile
+				write-log -Message "Assigning test: $Test_ID name: $TestRun_Name to TestRun Manager: $testRun_Manager_ID" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 				$query = "update testrun set Status_ID = 7, TestRun_Manager_ID = '$testRun_Manager_ID' where ID = '$Test_ID'"
 				Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 				break ManagerLoop
 			}
 		}
 		# No available TestRun Managers
-		write-log -Message "There are no TestRun Managers Available" -Logfile $logfile
+		write-log -Message "There are no TestRun Managers Available" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 
 	}
 	# No more Tests to reviewing
-	write-log -Message "Finished reviewing Queued Tests" -Logfile $logfile
+	write-log -Message "Finished reviewing Queued Tests" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 }
-
-#=======================================================================================
-#    _  _  _____                    ____       _             
-#  _| || ||_   _|__  __ _ _ __ ___ | __ )  ___| | __ _ _   _ 
-# |_  ..  _|| |/ _ \/ _` | '_ ` _ \|  _ \ / _ \ |/ _` | | | |
-# |_      _|| |  __/ (_| | | | | | | |_) |  __/ | (_| | |_| |
-#   |_||_|  |_|\___|\__,_|_| |_| |_|____/ \___|_|\__,_|\__, |
-#                                                      |___/ 
-#=======================================================================================

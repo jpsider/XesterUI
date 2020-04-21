@@ -1,4 +1,3 @@
-#=======================================================================================
 # System Variables
 set-ExecutionPolicy Bypass -Force
 
@@ -17,8 +16,11 @@ $KickerRunning = $true
 #Start loop
 do {
     # Delete Logs older than 3 days
+    write-output "Clearing Queue_Manager logs"
     Clear-Logs -Path "C:\XesterUI\Queue_Manager" -DaysBack 3
+    write-output "Clearing TestRun_Manager logs"
     Clear-Logs -Path "C:\XesterUI\TestRun_Manager" -DaysBack 3
+    write-output "Clearing TestRun logs"
     Clear-Logs -Path "C:\XesterUI\TestRuns" -DaysBack 3
 
     #check Status
@@ -29,14 +31,14 @@ do {
     
     if($ManagerStatus -eq 3){
         #Check the status of the Manager, if it starting up, start the manager process.
-        write-log -Message "The Manager status is 'Starting Up', Lets get it going!" -OutputStyle consoleOnly
+        write-output "The Manager status is 'Starting Up', Lets get it going!"
         Start-Process -WindowStyle Normal powershell.exe -ArgumentList "-file queueManager.ps1"
-        write-log -Message "The Manager was started." -OutputStyle consoleOnly
+        write-output "The Manager was started."
     } else {
         #Check the status of the Manager, if it starting up, start the manager process.
-        write-log -Message "The Manager status is not 'Starting Up', not taking action" -OutputStyle consoleOnly        
+        write-output "The Manager status is not 'Starting Up', not taking action"        
     }
-    write-log -Message "Waiting $ManagerWait Seconds before checking again." -OutputStyle consoleOnly
+    write-output "Waiting $ManagerWait Seconds before checking again."
     pause $ManagerWait
 
 } while ($KickerRunning = $true)

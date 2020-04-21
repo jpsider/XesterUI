@@ -1,13 +1,6 @@
-#=======================================================================================
-# __  __         _            _   _ ___ 
-# \ \/ /___  ___| |_ ___ _ __| | | |_ _|
-#  \  // _ \/ __| __/ _ \ '__| | | || | 
-#  /  \  __/\__ \ ||  __/ |  | |_| || | 
-# /_/\_\___||___/\__\___|_|   \___/|___|
-#                                       
-#=======================================================================================
 # System Variables
 set-ExecutionPolicy Bypass -Force
+$logLevel = "INFO"
 
 $MYINV = $MyInvocation
 $SCRIPTDIR = split-path $MYINV.MyCommand.Path
@@ -49,33 +42,33 @@ do {
 	# If its a new day, we should roll the log
 	$currentDay = (get-date).DayOfWeek
 	if($currentDay -ne $logStartDay){
-		write-log -Message "Its a new day, time to start a new log file." -Logfile $logfile
+		write-log -Message "Its a new day, time to start a new log file." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		$logStartDay = (get-date).DayOfWeek
 		$currentTime = Get-Date -Format HHmm
 		$NewLogName = "TestRun_manager_$currentTime.log"
 		Rename-Item -Path $logfile -NewName $NewLogName -Force -Confirm:$false
-		write-log -Message "#######################################################" -Logfile $logfile
+		write-log -Message "#######################################################" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	}else{
-		write-log -Message "It's not a new day, no new log file." -Logfile $logfile
+		write-log -Message "It's not a new day, no new log file." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	}
 
 	####################################
 	# Status Check  
 	####################################
 	#Query the DB for the TestRun Manager Status
-	write-log -Message "#######################################################" -Logfile $logfile
-	write-log -Message "Querying the Database to determine TestRun Manager Status" -Logfile $logfile
+	write-log -Message "#######################################################" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+	write-log -Message "Querying the Database to determine TestRun Manager Status" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	$query = "select ID,Status_ID,Wait,Log_File,Max_Concurrent from testrun_manager where ID like '$TestRunManagerID'"
 	$TestRunManagerData = @(Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString)
 	$TestRunManagerStatus = $TestRunManagerData[0].Status_ID
 	$TestRunManagerWait = $TestRunManagerData[0].Wait
 	#$logfile = $TestRunManagerData[0].Log_File
 	$TestRunMGR_Max_Concurrent = $TestRunManagerData[0].Max_Concurrent
-	write-log -Message "TestRun Manager ID is : ${TestRunManagerID}" -Logfile $logfile
-	write-log -Message "TestRun Manager Status is : ${TestRunManagerStatus}" -Logfile $logfile
-	write-log -Message "TestRun Manager Wait is : ${TestRunManagerWait}" -Logfile $logfile
-	write-log -Message "TestRun Manager Max_Concurrent is : ${TestRunMGR_Max_Concurrent}" -Logfile $logfile
-	Write-Log -Message "Updating HeartBeat" -Logfile $logfile
+	write-log -Message "TestRun Manager ID is : ${TestRunManagerID}" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+	write-log -Message "TestRun Manager Status is : ${TestRunManagerStatus}" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+	write-log -Message "TestRun Manager Wait is : ${TestRunManagerWait}" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+	write-log -Message "TestRun Manager Max_Concurrent is : ${TestRunMGR_Max_Concurrent}" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+	Write-Log -Message "Updating HeartBeat" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 	$CurrentHeartBeat = get-date
 	$query = "update testrun_manager set heartbeat='$CurrentHeartBeat' where ID like '$TestRunManagerID'"
 	Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
@@ -85,12 +78,12 @@ do {
 	####################################
     if($ManagerAction -eq "START"){
         #Set the status of the TestRun Manager to "Starting_Up"
-		write-log -Message "The Manager status is ${TestRunManagerStatus}, Lets start it up!" -Logfile $logfile
+		write-log -Message "The Manager status is ${TestRunManagerStatus}, Lets start it up!" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		$query = "update testrun_manager set Status_ID = 3 where ID like '$TestRunManagerID'"
 		Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
 		$ManagerAction = "Done"
         # wait 5 seconds
-		write-log -Message "Pausing 5 seconds" -Logfile $logfile
+		write-log -Message "Pausing 5 seconds" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
         pause 5
     }
 
@@ -98,11 +91,11 @@ do {
 	# Start-up Tasks 
 	####################################
     if($TestRunManagerStatus -eq 3){ #Starting_Up
-		write-log -Message "Begining Startup Tasks for TestRun Manager. Cancelling any running tests." -Logfile $logfile
+		write-log -Message "Begining Startup Tasks for TestRun Manager. Cancelling any running tests." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
         # Cancel any Running SUT's for this TestRun Manager
         CancelRunningTestRuns
 		# wait 5 seconds
-		write-log -Message "Pausing 5 seconds" -Logfile $logfile
+		write-log -Message "Pausing 5 seconds" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		pause 5
         # Set the status of the TestRun Manager to Up
         $query = "update testrun_manager set Status_ID = 2 where ID = '$TestRunManagerID'"
@@ -113,14 +106,14 @@ do {
 	# Normal Operation Tasks 
 	####################################
     if($TestRunManagerStatus -eq 2){ # Up and Running
-		write-log -Message "#############################################" -Logfile $logfile
-		write-log -Message "TestRun Manager is running, Lets review Assigned Tests" -Logfile $logfile
+		write-log -Message "#############################################" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
+		write-log -Message "TestRun Manager is running, Lets review Assigned Tests" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
         # Start Assigned Sut
         StartAssignedTests
 		# wait 5 seconds
-		write-log -Message "Pausing 5 seconds" -Logfile $logfile
+		write-log -Message "Pausing 5 seconds" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		pause 5        
-        write-log -Message "Pausing $TestRunManagerWait seconds." -Logfile $logfile
+        write-log -Message "Pausing $TestRunManagerWait seconds." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
         pause $TestRunManagerWait
     }
 
@@ -129,13 +122,13 @@ do {
 	####################################
     if($TestRunManagerStatus -eq 4){ #Shutting_down
         # Cancel any Running SUT's for this TestRun Manager
-		write-log -Message "Beginning Shutdown Procedures, Cancelling any running Tests" -Logfile $logfile
+		write-log -Message "Beginning Shutdown Procedures, Cancelling any running Tests" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
         CancelRunningTestRuns
 		# wait 5 seconds
-		write-log -Message "Pausing 5 seconds" -Logfile $logfile
+		write-log -Message "Pausing 5 seconds" -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		pause 5
 		#set status of TestRun Manager to "DOWN"
-		write-log -Message "The TestRun Manager Status is now being set to down, and the process will stop RUNNING." -Logfile $logfile
+		write-log -Message "The TestRun Manager Status is now being set to down, and the process will stop RUNNING." -Logfile $logfile -LogLevel $logLevel -MsgType INFO
 		$query = "update testrun_manager set Status_ID = 1 where ID = '$TestRunManagerID'"
 		Invoke-MySQLQuery -Query $query -ConnectionString $MyConnectionString
         # Requeue any Assigned SUT's

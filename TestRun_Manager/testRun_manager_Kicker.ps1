@@ -1,11 +1,3 @@
-#=======================================================================================
-# __  __         _            _   _ ___ 
-# \ \/ /___  ___| |_ ___ _ __| | | |_ _|
-#  \  // _ \/ __| __/ _ \ '__| | | || | 
-#  /  \  __/\__ \ ||  __/ |  | |_| || | 
-# /_/\_\___||___/\__\___|_|   \___/|___|
-#  
-#=======================================================================================
 # System Variables
 set-ExecutionPolicy Bypass -Force
 
@@ -34,14 +26,14 @@ do {
     
     if($ManagerStatus -eq 3){
         #Check the status of the TestRunManager, if it starting up, start the TestRunManager process.
-        write-log -Message "The TestRunManager status is 'Starting Up', Lets get it going!" -OutputStyle consoleOnly
+        write-output "The TestRunManager status is 'Starting Up', Lets get it going!"
         Start-Process -WindowStyle Normal powershell.exe -ArgumentList "-file TestRun_Manager.ps1"
-        write-log -Message "The TestRunManager was started." -OutputStyle consoleOnly
+        write-output "The TestRunManager was started."
     } else {
         # Take no action
-        write-log -Message "The TestRunManager status is not 'Starting Up', not taking action" -OutputStyle consoleOnly        
+        write-output "The TestRunManager status is not 'Starting Up', not taking action"        
     }
-    write-log -Message "Waiting $ManagerWait Seconds before checking again." -OutputStyle consoleOnly
+    write-output "Waiting $ManagerWait Seconds before checking again."
     pause $ManagerWait
 
 } while ($KickerRunning = $true)

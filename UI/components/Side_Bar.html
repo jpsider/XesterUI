@@ -1,0 +1,32 @@
+<section id="navSidebar" class="sidenav-content" >
+    <a href="index.php" class="nav-link active">
+        <clr-icon class="is-solid" shape="home" size="16"></clr-icon> &nbsp Home
+    </a>
+    <section class="nav-group collapsible">
+        <input id="User" type="checkbox">
+        <label for="User">User</label>
+		<ul class="nav-list">
+            <li><a id="TestRuns" href="index.php">TestRun Status</a></li>
+            <li><a id="systems" href="systems.php">Systems</a></li>
+            <li><a id="new_target" href="new_target.php">Add New Target</a></li>
+            <li><a id="new_system" href="new_system.php">Add New System</a></li>
+        </ul>
+    </section>
+    <section class="nav-group collapsible">
+        <input id="Targets" type="checkbox">
+        <label for="Targets">Targets</label>
+		<ul class="nav-list">
+            <li><a id="Targets" href="targets.php">All Targets</a></li>
+        </ul>
+    </section>
+    <section class="nav-group collapsible">
+        <input id="qman" type="checkbox" checked>
+        <label for="qman">Management</label>
+		<ul class="nav-list">
+            <li><a id="Queue Manager" href="queue_manager.php">Queue Manager</a></li>
+            <li><a id="TestRun Manager" href="testrun_manager.php">TestRun Manager</a></li>
+            <li><a id="Test Suites" href="testsuites.php">All Test Suites</a></li>
+            <li><a id="Test Cases" href="testcases.php">All Test Cases</a></li>
+        </ul>
+    </section>
+</section>
