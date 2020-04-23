@@ -25,8 +25,9 @@ VALUES (1,'PASS','#006633','Green'),
 INSERT INTO QUEUE_MANAGER (Status_ID, Wait, Log_File)
 VALUES (1,60,'c:\\XesterUI\\Queue_Manager\\Queue_Manager.log');
 
-INSERT INTO TESTRUN_MANAGER (Status_ID, Wait, Max_Concurrent, Log_File)
-VALUES (1,60,4,'c:\\XesterUI\\TESTRUN_Manager\\TESTRUN_Manager.log');
+INSERT INTO TESTRUN_MANAGER (ID,Status_ID, Wait, Max_Concurrent, Log_File)
+VALUES (1,1,60,4,'c:\\XesterUI\\TESTRUN_Manager\\TESTRUN_Manager.log');
+VALUES (9999,1,60,4,'nolog');
 
 INSERT INTO PASSWORDS (ID, Username, Password)
 VALUES (1,'administrator@corp.local','VMware1!'),
