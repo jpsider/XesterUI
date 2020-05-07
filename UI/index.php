@@ -28,29 +28,48 @@
 		//Submit new testrun
 		$TestName=$_GET['TestName'];
 		$System_ID=$_GET['System_ID'];
-		if(!empty($_GET['Remediate'])){
-			$Remediate=$_GET['Remediate'];
-			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Remediate,Hidden) VALUES ('$TestName','$System_ID','5','6','1',0)";
-			$pdo = Database::connect();
-			$pdo->query($sql);
-			Database::disconnect();
-			// Send the user back to the same page
-			header("Refresh:0 url=index.php");		
-		} else {
-			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Hidden) VALUES ('$TestName','$System_ID','5','6',0)";
-			$pdo = Database::connect();
-			$pdo->query($sql);
-			Database::disconnect();
-			// Send the user back to the same page
-		}
-			header("Refresh:0 url=index.php");
+		$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Hidden) VALUES ('$TestName','$System_ID','5','6',0)";
+		$pdo = Database::connect();
+		$pdo->query($sql);
+		Database::disconnect();
 		//Send the user back to the same page (without get)
 		header("Refresh:0 url=index.php");
 	} else {
+	}
+
+	if (!empty($_GET['RERUN_ALL'])) {
+		$pdo = Database::connect();
+			$sql = 'select ts.ID, ' 
+				. 'ts.Name, '
+				. 'ts.Status_ID, '
+				. 'ts.Result_ID, '
+				. 'ts.System_ID, '	
+				. 'ts.Hidden '													
+			. 'from TESTRUN ts '
+			. 'where ts.Hidden=0 and ts.Status_ID=9 '
+			. 'order by ts.ID DESC ';
+			
+		foreach ($pdo->query($sql) as $row) {
+		
+			$testrun_id=$row['ID'];
+			$TestName=$row['Name'];
+			$System_ID=$row['System_ID'];
+			// Update the database to set the test to hidden
+			$sql = "UPDATE TESTRUN SET HIDDEN=1 where ID=$testrun_id";
+			$pdo->query($sql);
+			//Submit new testrun
+			$sql = "insert into testrun (Name,System_ID,STATUS_ID,RESULT_ID,Hidden) VALUES ('$TestName','$System_ID','5','6',0)";
+			$pdo->query($sql);
+		}
+		Database::disconnect();
+		//Send the user back to the same page (without get)
+		header("Refresh:0 url=index.php");
+	} else {		
 ?>
 <!-- End Head PHP -->
 	<div class="content-area"><!-- Start content-area -->
 		<h3>TestRun Results</h3>
+		<form action="index.php" method="get"><input type="hidden" name="RERUN_ALL" value="TRUE"><button class="btn btn-warning-outline btn-sm"><clr-icon class="is-solid" size="16" shape="redo"></clr-icon> RERUN ALL</button></form>
 				<div class="row">
 					<table id="example" class="table table-compact">
 						<thead>

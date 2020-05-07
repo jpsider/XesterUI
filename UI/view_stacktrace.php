@@ -17,7 +17,6 @@
 							<th>IP_Address</th>
 							<th>Message</th>
 							<th>StackTrace</th>
-							<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,8 +59,6 @@
 								echo '<td>'. $row['IP_Address'] . '</td>';
 								echo '<td>'. $row['Message'] . '</td>';
 								echo '<td>'. $row['Stacktrace'] . '</td>';
-								echo '<td><input type="hidden" name="System_ID" value='.$row['System_ID'].'><input type="submit" class="btn btn-success-outline btn-sm" value="Remediate"></form></td>';
-
 								echo '</tr>';
 							}
 							Database::disconnect();

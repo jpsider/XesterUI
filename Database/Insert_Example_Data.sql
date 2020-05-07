@@ -9,7 +9,7 @@ VALUES (1,'Down','#CC0000','Red'),
 (6,'Queued','#FFFFFF','White'),
 (7,'Assigned','#6699FF','SkyBlue'),
 (8,'Running','#0066FF','Blue'),
-(9,'Complete','#00CC66','LightGreen'),
+(9,'Complete','#336633','LightGreen'),
 (10,'Cancelled','#333333','Charcoal'),
 (11,'Enabled','#006633','Green'),
 (12,'Disabled','#CC0000','Red');

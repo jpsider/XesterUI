@@ -19,7 +19,6 @@
 							<th>Result</th>
 							<th>Elapsed_Time</th>
 							<th>Asserts</th>
-                            <th>Action</th>
 							<th>date_modified</th>
 							</tr>
 						</thead>
@@ -84,9 +83,6 @@
 								}
 								echo '<td>'. $row['Elapsed_Time'] . '</td>';
 								echo '<td>'. $row['Asserts'] . '</td>';
-								echo '<td width=250>';
-								echo '<form action="SubmitTestRun.php" method="get"><input type="hidden" name="testSuite_id" value='.$row['ID'].'><button class="btn btn-yellow-outline btn-sm"><clr-icon class="is-solid" shape="wand" size="16"></clr-icon> Remediate</button></form>';
-                                echo '</td>';
 								echo '<td>'. $row['date_modified'] . '</td>';
 								echo '</tr>';
 							}
