@@ -21,6 +21,7 @@
         <script src="components/js/refresh.js"></script>
         <!-- Custom CSS -->
         <link rel="stylesheet" href="components/css/custom-datatables.jquery.min.css">
+        <link rel="stylesheet" href="components/css/datatables.min.css">
         <link rel="stylesheet" href="components/css/custom-buttons.css">
         <title>XesterUI</title>
     </head>

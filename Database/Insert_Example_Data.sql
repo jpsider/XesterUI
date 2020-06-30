@@ -26,8 +26,8 @@ INSERT INTO QUEUE_MANAGER (Status_ID, Wait, Log_File)
 VALUES (1,60,'c:\\XesterUI\\Queue_Manager\\Queue_Manager.log');
 
 INSERT INTO TESTRUN_MANAGER (ID,Status_ID, Wait, Max_Concurrent, Log_File)
-VALUES (1,1,60,4,'c:\\XesterUI\\TESTRUN_Manager\\TESTRUN_Manager.log');
-VALUES (9999,1,60,4,'nolog');
+VALUES (1,1,60,4,'c:\\XesterUI\\TESTRUN_Manager\\TESTRUN_Manager.log'),
+(9999,1,60,4,'nolog');
 
 INSERT INTO PASSWORDS (ID, Username, Password)
 VALUES (1,'administrator@corp.local','VMware1!'),
@@ -55,9 +55,9 @@ VALUES
 INSERT INTO TARGETS (ID,Target_Name,Target_Type_ID,IP_Address,STATUS_ID,Password_ID,System_ID,Config_File)
 VALUES 
 (1,'192.168.2.220',1,'192.168.2.220',11,1,1,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
-(1,'192.168.2.220',1,'192.168.2.220',11,1,2,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
-(1,'192.168.2.220',1,'192.168.2.220',11,1,3,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
-(1,'192.168.2.220',1,'192.168.2.220',11,1,4,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
+(2,'192.168.2.220',1,'192.168.2.220',11,1,2,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
+(3,'192.168.2.220',1,'192.168.2.220',11,1,3,'C:\\XesterUI\\Configs\\Fancy_Config.json'),
+(4,'192.168.2.220',1,'192.168.2.220',11,1,4,'C:\\XesterUI\\Configs\\Fancy_Config.json');
 
 
 
