@@ -28,7 +28,8 @@
     <script> 
 	$(document).ready(function() {
             $('#example').dataTable({
-                "dom": '<"wrapper"fltip>'
+                "dom": '<"wrapper"fltip>',
+                "order": [[ 3, "desc" ]]
             });
 	});
     </script>
@@ -40,10 +41,10 @@
                         <span class="title">XesterUI</span>
                     </a>
                 </div>
-                <div class="header-nav">
+                <!--<div class="header-nav">
                     <a href="index.php" class="active nav-link nav-text">Plugin01</a>
                     <a href="index.php" class="nav-link nav-text">Plugin02</a>
-                </div>
+                </div> -->
                 <div class="header-actions">
                     <div class="btn-group">
                         <button class="btn btn-inverse btn-sm" type="button" onclick="switch_style('dark');return false;" name="theme" value="Dark Theme" id="dark"><clr-icon class="is-solid" size="12" shape="cloud"></clr-icon> Dark Theme</button>

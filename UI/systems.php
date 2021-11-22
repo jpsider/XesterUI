@@ -23,7 +23,7 @@ if (!empty($_GET['TestName'])) {
 
     <h3>Systems</h3>
 				<div class="row">
-					<table id="example" class="table compact">
+					<table id="example" class="table table-compact">
 						<thead>
 							<tr>
 							<th>ID</th>
